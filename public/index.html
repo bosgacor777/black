@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <title>Blackjack Underground</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/blackjack-new.css" />
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- SVG DEFS                                    -->
+  <!-- ═══════════════════════════════════════════ -->
+  <svg id="svg-defs" xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <defs>
+      <symbol id="icon-spades" viewBox="0 0 24 24">
+        <path d="M12 2 C12 2 3 9 3 14 C3 17.3 5.7 19 8.5 18.5 C7.8 20 7 21.5 5.5 22 L18.5 22 C17 21.5 16.2 20 15.5 18.5 C18.3 19 21 17.3 21 14 C21 9 12 2 12 2Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="icon-hearts" viewBox="0 0 24 24">
+        <path d="M12 21 C12 21 3 14 3 8.5 C3 5.4 5.4 3 8.5 3 C10.2 3 11.7 3.8 12 5 C12.3 3.8 13.8 3 15.5 3 C18.6 3 21 5.4 21 8.5 C21 14 12 21 12 21Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="icon-diamonds" viewBox="0 0 24 24">
+        <path d="M12 2 L22 12 L12 22 L2 12 Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="icon-clubs" viewBox="0 0 24 24">
+        <circle cx="8.5" cy="10" r="4" fill="currentColor"/>
+        <circle cx="15.5" cy="10" r="4" fill="currentColor"/>
+        <circle cx="12" cy="6.5" r="4" fill="currentColor"/>
+        <rect x="10" y="15" width="4" height="6" rx="1" fill="currentColor"/>
+        <rect x="7" y="20" width="10" height="2" rx="1" fill="currentColor"/>
+      </symbol>
+
+      <!-- CHIP CASINO — lingkaran bertumpuk, bukan roda -->
+      <symbol id="icon-chip" viewBox="0 0 40 40">
+        <circle cx="20" cy="20" r="19" fill="currentColor" opacity="0.15"/>
+        <circle cx="20" cy="20" r="19" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <circle cx="20" cy="20" r="13" fill="currentColor" opacity="0.35"/>
+        <circle cx="20" cy="20" r="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+        <circle cx="20" cy="20" r="7"  fill="currentColor" opacity="0.9"/>
+        <!-- notch atas bawah kiri kanan -->
+        <rect x="17.5" y="1"  width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="17.5" y="34" width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="1"  y="17.5" width="5" height="5" rx="1" fill="currentColor"/>
+        <rect x="34" y="17.5" width="5" height="5" rx="1" fill="currentColor"/>
+      </symbol>
+
+      <pattern id="card-back-pattern" patternUnits="userSpaceOnUse" width="10" height="10" patternTransform="rotate(45)">
+        <rect width="10" height="10" fill="#1a1040"/>
+        <rect x="0" y="0" width="5" height="5" fill="#22155a" opacity="0.6"/>
+        <rect x="5" y="5" width="5" height="5" fill="#22155a" opacity="0.6"/>
+      </pattern>
+    </defs>
+  </svg>
+
+</head>
+<body>
+
+  <!-- BACKGROUND -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-felt"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-vignette"></div>
+    <div class="bg-noise"></div>
+    <div class="bg-scanlines"></div>
+  </div>
+
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SCREEN: LOGIN                     -->
+  <!-- ══════════════════════════════════ -->
+  <div id="screen-login" class="screen screen--active">
+    <div class="login-container">
+
+      <div class="login-logo">
+        <div class="logo-emblem" aria-hidden="true">
+          <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="40,5 75,25 75,55 40,75 5,55 5,25" stroke="url(#gold-grad)" stroke-width="1.5" fill="none"/>
+            <polygon points="40,12 68,28 68,52 40,68 12,52 12,28" stroke="url(#gold-grad)" stroke-width="0.5" fill="none" opacity="0.5"/>
+            <use href="#icon-spades"   x="20" y="15" width="18" height="18" fill="url(#gold-grad)"/>
+            <use href="#icon-hearts"   x="42" y="15" width="18" height="18" fill="#c0375a"/>
+            <use href="#icon-clubs"    x="20" y="38" width="18" height="18" fill="url(#gold-grad)"/>
+            <use href="#icon-diamonds" x="42" y="38" width="18" height="18" fill="#c0375a"/>
+            <defs>
+              <linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%"   stop-color="#f0c060"/>
+                <stop offset="50%"  stop-color="#fde68a"/>
+                <stop offset="100%" stop-color="#c8903a"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1 class="logo-title">BLACKJACK<br/><span>UNDERGROUND</span></h1>
+        <p class="logo-sub">Meja Eksklusif. Taruhan Sungguhan.</p>
+      </div>
+
+      <div class="login-form glass-panel">
+        <div class="form-group">
+          <label class="form-label" for="input-username">NAMA SANDI LO</label>
+          <input
+            type="text"
+            id="input-username"
+            class="form-input"
+            placeholder="Masukkan nama lo, Bos..."
+            maxlength="20"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <div class="input-border-anim" aria-hidden="true"></div>
+        </div>
+
+        <div class="mode-selector">
+          <button class="mode-btn mode-btn--active" id="btn-mode-online" data-mode="online">
+            <span class="mode-btn__icon">
+              <svg viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M10 2 C7 5 7 15 10 18" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M10 2 C13 5 13 15 10 18" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="2" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </span>
+            <span class="mode-btn__label">MABAR</span>
+            <span class="mode-btn__sub">Online Multiplayer</span>
+          </button>
+          <button class="mode-btn" id="btn-mode-solo" data-mode="solo">
+            <span class="mode-btn__icon">
+              <svg viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M3 18 C3 14 6 12 10 12 C14 12 17 14 17 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <span class="mode-btn__label">SOLO</span>
+            <span class="mode-btn__sub">Offline vs AI</span>
+          </button>
+        </div>
+
+        <div id="status-connection" class="connection-status">
+          <span class="status-dot" id="dot-connection"></span>
+          <span id="text-connection">Mengecek koneksi server...</span>
+        </div>
+
+        <button id="btn-masuk" class="btn-primary btn--enter" disabled>
+          <span class="btn-text">MASUK KE MEJA</span>
+          <span class="btn-shine" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <p class="login-disclaimer">Modal awal: <strong>Rp 1.000.000</strong> — Jangan nyesel udah masuk.</p>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- SCREEN: GAME TABLE                -->
+  <!-- ══════════════════════════════════ -->
+  <div id="screen-game" class="screen">
+
+    <!-- ── HUD ATAS ── -->
+    <header class="game-hud-top" role="banner">
+      <div class="hud-left">
+        <div class="hud-logo">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <use href="#icon-spades" fill="var(--gold)"/>
+          </svg>
+          <span class="hud-logo-text">UNDERGROUND</span>
+        </div>
+        <div class="hud-mode-badge" id="hud-mode-badge">SOLO</div>
+      </div>
+
+      <div class="hud-center">
+        <div class="hud-round-info">
+          <span class="round-label">RONDE</span>
+          <span class="round-num" id="hud-round-num">—</span>
+        </div>
+        <div class="hud-phase-badge" id="hud-phase-badge">LOBBY</div>
+      </div>
+
+      <div class="hud-right">
+        <div class="hud-room-id" id="hud-room-id"></div>
+
+        <!-- Timer Ring -->
+        <div class="timer-ring" id="timer-ring" aria-hidden="true">
+          <div class="timer-ring-inner" id="timer-ring-num">—</div>
+        </div>
+
+        <button class="btn-icon" id="btn-leave" title="Tinggalkan Meja" aria-label="Tinggalkan meja">
+          <svg viewBox="0 0 20 20" fill="none" width="16" height="16">
+            <path d="M13 3H17V17H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 14L13 10L8 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="3" y1="10" x2="13" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ── AREA MEJA ── -->
+    <main class="game-table" role="main">
+
+      <!-- DEALER ZONE -->
+      <section class="dealer-zone" aria-label="Area Bandar">
+
+        <div class="dealer-zone-label">— BANDAR —</div>
+
+        <!-- Live dealer feed container -->
+        <div class="dealer-feed" id="dealer-feed">
+          <!-- Grain & vignette via CSS ::before ::after -->
+
+          <!-- LIVE badge -->
+          <div class="live-badge" aria-hidden="true">
+            <div class="live-dot"></div>
+            <span class="live-text">LIVE</span>
+          </div>
+
+          <!-- Placeholder konten -->
+          <div class="dealer-feed-placeholder" aria-hidden="true">
+            <div class="dealer-feed-suits">
+              <span>♠</span>
+              <span>♥</span>
+              <span>♦</span>
+              <span>♣</span>
+            </div>
+            <div class="dealer-feed-title">Live Dealer</div>
+          </div>
+
+          <!-- Nama dealer -->
+          <div class="dealer-feed-name">BANDAR</div>
+
+          <!-- Score dealer -->
+          <div class="dealer-feed-score" id="dealer-score-badge" aria-live="polite">
+            <span id="dealer-score-val">—</span>
+          </div>
+        </div>
+
+        <!-- Kartu dealer di bawah feed -->
+        <div class="dealer-hand-area" id="dealer-hand-area" role="group" aria-label="Kartu bandar">
+          <!-- Diinjek JS -->
+        </div>
+
+        <div class="dealer-status-msg" id="dealer-status-msg" aria-live="assertive"></div>
+      </section>
+
+      <!-- GARIS PEMISAH -->
+      <div class="table-divider" aria-hidden="true">
+        <div class="divider-line"></div>
+        <div class="divider-emblem">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none">
+            <path d="M12 2 L22 12 L12 22 L2 12 Z" fill="rgba(212,168,67,0.35)" stroke="rgba(212,168,67,0.5)" stroke-width="0.5"/>
+          </svg>
+        </div>
+        <div class="divider-line"></div>
+      </div>
+
+      <!-- PLAYER SEATS -->
+      <section class="players-zone" aria-label="Area Pemain">
+        <div id="players-seats-container" class="seats-grid">
+          <!-- Dirender JS -->
+        </div>
+      </section>
+
+      <div class="table-pot-area" id="table-pot-area" aria-live="polite">
+        <div class="pot-inner" id="pot-inner"></div>
+      </div>
+
+    </main>
+
+    <!-- ── ACTION PANEL ── -->
+    <footer class="action-panel" id="action-panel" role="complementary" aria-label="Panel aksi">
+
+      <!-- Info pemain sendiri -->
+      <div class="player-self-info self-info-row">
+        <div class="self-avatar" id="self-avatar" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none" width="20" height="20">
+            <circle cx="16" cy="12" r="6" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M4 30 C4 22 9 19 16 19 C23 19 28 22 28 30" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="self-details">
+          <div class="self-name" id="self-name">
+            — <span class="self-name-tag">• LO</span>
+          </div>
+          <div class="self-balance-wrap">
+            <!-- Chip kecil casino -->
+            <svg viewBox="0 0 40 40" width="14" height="14" aria-hidden="true" style="color:var(--gold);flex-shrink:0">
+              <use href="#icon-chip" color="var(--gold)"/>
+            </svg>
+            <span class="self-balance" id="self-balance">Rp 0</span>
+          </div>
+        </div>
+        <div class="self-hand-val" id="self-hand-val"></div>
+      </div>
+
+      <!-- Betting Panel -->
+      <div class="betting-panel" id="betting-panel" aria-label="Panel taruhan">
+
+        <div class="bet-display">
+          <span class="bet-display__label">TARUHAN</span>
+          <span class="bet-display__amount" id="bet-display-amount">Rp 0</span>
+        </div>
+
+        <!-- Chip Selector — pakai chip casino baru -->
+        <div class="chip-selector" role="group" aria-label="Pilih nominal chip">
+
+          <button class="chip-btn" data-amount="10000" aria-label="Chip Rp 10.000">
+            <svg viewBox="0 0 40 40" width="44" height="44" style="color:#4a90d9">
+              <use href="#icon-chip" color="#4a90d9"/>
+            </svg>
+            <span>10K</span>
+          </button>
+
+          <button class="chip-btn" data-amount="25000" aria-label="Chip Rp 25.000">
+            <svg viewBox="0 0 40 40" width="44" height="44" style="color:#3db87a">
+              <use href="#icon-chip" color="#3db87a"/>
+            </svg>
+            <span>25K</span>
+          </button>
+
+          <button class="chip-btn" data-amount="50000" aria-label="Chip Rp 50.000">
+            <svg viewBox="0 0 40 40" width="44" height="44" style="color:#e05050">
+              <use href="#icon-chip" color="#e05050"/>
+            </svg>
+            <span>50K</span>
+          </button>
+
+          <button class="chip-btn" data-amount="100000" aria-label="Chip Rp 100.000">
+            <svg viewBox="0 0 40 40" width="44" height="44" style="color:#d4a843">
+              <use href="#icon-chip" color="#d4a843"/>
+            </svg>
+            <span>100K</span>
+          </button>
+
+          <button class="chip-btn" data-amount="250000" aria-label="Chip Rp 250.000">
+            <svg viewBox="0 0 40 40" width="44" height="44" style="color:#9b59b6">
+              <use href="#icon-chip" color="#9b59b6"/>
+            </svg>
+            <span>250K</span>
+          </button>
+
+          <button class="chip-btn" data-amount="500000" aria-label="Chip Rp 500.000">
+            <svg viewBox="0 0 40 40" width="44" height="44" style="color:#e67e22">
+              <use href="#icon-chip" color="#e67e22"/>
+            </svg>
+            <span>500K</span>
+          </button>
+
+        </div>
+
+        <div class="bet-controls">
+          <button class="btn-secondary" id="btn-bet-clear" aria-label="Hapus taruhan">HAPUS</button>
+          <button class="btn-primary" id="btn-bet-confirm" disabled aria-label="Konfirmasi taruhan">
+            <span class="btn-text">PASANG TARUHAN</span>
+            <span class="btn-shine" aria-hidden="true"></span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Game Action Buttons -->
+      <div class="game-actions" id="game-actions" aria-label="Aksi permainan" hidden>
+        <button class="action-btn action-btn--hit" id="btn-hit" aria-label="Hit">
+          <span class="action-btn__label">HIT</span>
+          <span class="action-btn__sub">Ambil Kartu</span>
+        </button>
+        <button class="action-btn action-btn--stand" id="btn-stand" aria-label="Stand">
+          <span class="action-btn__label">STAND</span>
+          <span class="action-btn__sub">Cukup</span>
+        </button>
+        <button class="action-btn action-btn--double" id="btn-double" aria-label="Double">
+          <span class="action-btn__label">DOUBLE</span>
+          <span class="action-btn__sub">Dobel Taruhan</span>
+        </button>
+        <button class="action-btn action-btn--split" id="btn-split" aria-label="Split">
+          <span class="action-btn__label">SPLIT</span>
+          <span class="action-btn__sub">Pisah Tangan</span>
+        </button>
+      </div>
+
+      <!-- Waiting / Dealer turn status -->
+      <div class="waiting-msg dealer-status-row" id="waiting-msg" hidden>
+        <div class="dealer-spinner waiting-spinner" aria-hidden="true"></div>
+        <span class="dealer-status-text" id="waiting-text">Nunggu pemain lain...</span>
+      </div>
+
+    </footer>
+
+    <!-- Timer bar bawah -->
+    <div class="turn-timer-bar" id="turn-timer-bar" aria-hidden="true">
+      <div class="timer-fill" id="timer-fill"></div>
+    </div>
+
+    <!-- ── CHAT ── -->
+    <div class="chat-overlay" id="chat-overlay" aria-label="Live chat" hidden>
+      <button class="chat-header" id="chat-header"
+        role="button" tabindex="0"
+        aria-expanded="false" aria-controls="chat-body">
+        <span class="chat-title">
+          <span class="chat-title-icon">💬</span>
+          ROASTING ROOM
+        </span>
+        <span class="chat-unread-badge" id="chat-unread-badge" aria-label="Pesan baru" hidden>0</span>
+        <span class="chat-toggle-icon" aria-hidden="true">▲</span>
+      </button>
+      <div class="chat-body" id="chat-body">
+        <div class="chat-messages" id="chat-messages"
+          role="log" aria-live="polite" aria-label="Pesan chat">
+        </div>
+        <div class="chat-input-wrap">
+          <input
+            type="text"
+            id="chat-input"
+            class="chat-input"
+            placeholder="Roasting boleh, spam jangan..."
+            maxlength="200"
+            autocomplete="off"
+          />
+          <button class="chat-send-btn" id="chat-send-btn" aria-label="Kirim pesan">➤</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen-game -->
+
+  <!-- ══════════════════════════════════ -->
+  <!-- OVERLAY: RESULT                   -->
+  <!-- ══════════════════════════════════ -->
+  <div id="overlay-result" class="overlay" aria-modal="true" role="dialog" aria-label="Hasil ronde" hidden>
+    <div class="overlay-backdrop" aria-hidden="true"></div>
+    <div class="result-modal glass-panel">
+      <div class="result-icon" id="result-icon" aria-hidden="true"></div>
+      <div class="result-headline" id="result-headline">—</div>
+      <div class="result-sub" id="result-sub">—</div>
+      <div class="result-amount" id="result-amount"></div>
+      <div class="result-balance-new" id="result-balance-new"></div>
+      <button class="btn-primary" id="btn-result-continue">
+        <span class="btn-text">LANJUT BERJUANG</span>
+        <span class="btn-shine" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast-container" class="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- CELEBRATION -->
+  <canvas id="celebration-canvas" class="celebration-canvas" aria-hidden="true"></canvas>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- JS                                -->
+  <!-- ══════════════════════════════════ -->
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" crossorigin="anonymous" defer></script>
+  <script src="js/engine.js" defer></script>
+  <script src="js/ui.js" defer></script>
+  <script src="js/socket-client.js" defer></script>
+  <script src="js/script.js" defer></script>
+
+  <!-- Update timer ring via JS (conic-gradient butuh JS karena dynamic value) -->
+  <script>
+    // Timer ring updater — panggil updateTimerRing(seconds, maxSeconds) dari JS utama
+    window.updateTimerRing = function(val, max) {
+      const ring = document.getElementById('timer-ring');
+      const num  = document.getElementById('timer-ring-num');
+      if (!ring) return;
+      const deg = Math.round((val / max) * 360);
+      const color = val > max * 0.5 ? 'rgba(212,168,67,0.85)'
+                  : val > max * 0.25 ? 'rgba(230,126,34,0.9)'
+                  : 'rgba(224,80,80,0.9)';
+      ring.style.background = `conic-gradient(${color} ${deg}deg, rgba(255,255,255,0.06) 0deg)`;
+      if (num) num.textContent = val;
+    };
+
+    // Timer fill bar updater — panggil updateTimerBar(pct) dari 0–100
+    window.updateTimerBar = function(pct) {
+      const fill = document.getElementById('timer-fill');
+      if (fill) fill.style.width = pct + '%';
+    };
+  </script>
+
+</body>
+</html>
