@@ -7,7 +7,7 @@
  */
 
 'use strict';
-
+ alert("SCRIPT JS BERHASIL DIMUAT!");
 /* ─────────────────────────────────────────────
    SECTION 1: GAME CONTROLLER CLASS
    ───────────────────────────────────────────── */
