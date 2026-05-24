@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>PSAT Bahasa Indonesia – Kelas X-10</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root{
+  --r:#b5271f;--rg:#8c1e18;--g:#c9993a;
+  --bg:#f4f1ed;--w:#fff;--tx:#1c1c1c;
+  --s:#5a5a5a;--br:#e0d9d0;--fs:14px;
+  --rad:10px;--green:#1a7a3c;--amber:#d97706;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:var(--fs)}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;max-width:640px;margin:0 auto}
+
+.hdr{background:var(--rg);color:#fff;padding:18px 16px 14px;border-bottom:4px solid var(--g);position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(255,255,255,.03) 20px,rgba(255,255,255,.03) 40px)}
+.hdr-in{position:relative;z-index:1}
+.hdr-badge{display:inline-block;border:1px solid var(--g);color:var(--g);font-size:9px;letter-spacing:.16em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:10px}
+.hdr h1{font-family:'Playfair Display',serif;font-size:20px;font-weight:900;line-height:1.2;margin-bottom:3px}
+.hdr h2{font-size:12px;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:14px}
+.hdr-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid rgba(255,255,255,.15);padding-top:12px}
+.hdr-meta-item strong{display:block;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--g);margin-bottom:1px;font-weight:700}
+.hdr-meta-item span{font-size:11.5px;color:rgba(255,255,255,.85)}
+
+.identitas{background:var(--w);margin:12px;border-radius:var(--rad);border:1.5px solid var(--br);padding:14px}
+.identitas h3{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--r);font-weight:700;margin-bottom:10px}
+.id-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.id-row label{width:80px;flex-shrink:0;color:var(--s);font-size:12px}
+.id-row input{flex:1;border:0;border-bottom:1.5px solid var(--br);padding:4px 0;font-family:inherit;font-size:13px;background:transparent;outline:none;color:var(--tx)}
+.id-row input:focus{border-bottom-color:var(--r)}
+
+.petunjuk{margin:0 12px 12px;background:var(--w);border:1.5px solid var(--br);border-left:4px solid var(--g);border-radius:var(--rad);padding:12px 14px}
+.petunjuk h3{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--r);font-weight:700;margin-bottom:8px}
+.petunjuk ol{padding-left:16px;font-size:12px;color:var(--s)}
+.petunjuk li{margin-bottom:3px}
+
+.seksi-hdr{background:var(--r);color:#fff;margin:0 12px 8px;border-radius:8px;padding:9px 14px;border-left:4px solid var(--g);display:flex;align-items:center;gap:8px}
+.seksi-hdr span{font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.seksi-hdr small{font-size:10px;color:rgba(255,255,255,.6);margin-left:auto}
+
+.bacaan{background:var(--w);margin:0 12px 10px;border-radius:var(--rad);border:1.5px solid var(--br);border-top:3px solid var(--g);overflow:hidden}
+.bacaan-toggle{width:100%;text-align:left;background:none;border:none;padding:11px 14px;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--rg);cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.bacaan-toggle .arrow{font-size:11px;color:var(--g);transition:transform .25s}
+.bacaan-toggle.open .arrow{transform:rotate(180deg)}
+.bacaan-body{display:none;padding:0 14px 14px;font-size:12px;line-height:1.75;border-top:1px solid var(--br)}
+.bacaan-body.show{display:block}
+.bacaan-body .judul-teks{font-family:'Playfair Display',serif;font-size:13px;color:var(--rg);font-weight:700;text-align:center;margin:10px 0 8px}
+.bacaan-body p{margin-bottom:7px;color:#2a2a2a}
+.bacaan-body .dlg{margin:4px 0 4px 8px}
+.bacaan-body .dlg b{color:var(--rg)}
+.puisi-blok{font-style:italic;text-align:center;line-height:2;font-size:12.5px;color:#2a2a2a}
+.puisi-blok .pjdl{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;font-style:normal;color:var(--rg);margin-bottom:2px}
+.puisi-blok .pkrya{font-style:normal;font-size:10px;color:var(--s);margin-bottom:10px}
+
+.soal{background:var(--w);margin:0 12px 8px;border-radius:var(--rad);border:1.5px solid var(--br);overflow:hidden;transition:border-color .2s}
+.soal.answered{border-color:#c8dcc8}
+.soal-q{padding:12px 14px 8px;display:flex;gap:10px;align-items:flex-start}
+.soal-num{flex-shrink:0;width:26px;height:26px;background:var(--r);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:'Playfair Display',serif;margin-top:1px}
+.soal-txt{font-size:13px;line-height:1.6;flex:1}
+.soal-tipe{display:inline-block;font-size:9px;background:#f0e8d5;color:#7a5a1a;padding:2px 7px;border-radius:4px;font-weight:700;letter-spacing:.05em;margin-bottom:4px}
+
+.pilihan{list-style:none;border-top:1px solid var(--br)}
+.pilihan li{display:flex;align-items:flex-start;cursor:pointer;border-bottom:1px solid var(--br);transition:background .15s}
+.pilihan li:last-child{border-bottom:0}
+.pilihan li .huruf-btn{flex-shrink:0;width:36px;padding:10px 0;text-align:center;font-weight:700;font-size:12px;color:var(--s);border-right:1px solid var(--br);align-self:stretch;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;transition:all .15s}
+.pilihan li .opsi-txt{flex:1;padding:9px 12px;font-size:12.5px;line-height:1.55;transition:color .15s}
+.pilihan li.dipilih{background:#fdf2f0}
+.pilihan li.dipilih .huruf-btn{background:var(--r);color:#fff;border-right-color:var(--r)}
+.pilihan li.dipilih .opsi-txt{color:var(--r);font-weight:600}
+.pilihan li:active{background:#faeae8}
+
+.pilihan li.benar{background:#f0faf4 !important}
+.pilihan li.benar .huruf-btn{background:var(--green) !important;color:#fff !important;border-right-color:var(--green) !important}
+.pilihan li.benar .opsi-txt{color:var(--green) !important;font-weight:700 !important}
+.pilihan li.salah-dipilih{background:#fff5f5 !important}
+.pilihan li.salah-dipilih .huruf-btn{background:#c0392b !important;color:#fff !important;border-right-color:#c0392b !important}
+.pilihan li.salah-dipilih .opsi-txt{color:#c0392b !important;font-weight:700 !important}
+.pilihan li.kunci-benar{background:#f0faf4 !important}
+.pilihan li.kunci-benar .huruf-btn{background:var(--green) !important;color:#fff !important;border-right-color:var(--green) !important}
+.pilihan li.kunci-benar .opsi-txt{color:var(--green) !important;font-weight:700 !important}
+
+.pgk{border-top:1px solid var(--br);padding:4px 0}
+.pgk label{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;cursor:pointer;border-bottom:1px solid var(--br);font-size:12.5px;line-height:1.5}
+.pgk label:last-child{border-bottom:0}
+.pgk label input[type=checkbox]{flex-shrink:0;width:16px;height:16px;accent-color:var(--r);margin-top:2px;cursor:pointer}
+.pgk label.cek{background:#fdf2f0;color:var(--r);font-weight:600}
+.pgk label.pgk-benar{background:#f0faf4 !important;color:var(--green) !important;font-weight:700 !important}
+.pgk label.pgk-salah{background:#fff5f5 !important;color:#c0392b !important;font-weight:700 !important}
+.pgk-note{font-size:10.5px;color:var(--green);padding:6px 14px 8px;font-style:italic}
+.pgk-note.salah{color:#c0392b}
+
+.uraian{border-top:1px solid var(--br);padding:12px 14px}
+.uraian textarea{width:100%;min-height:80px;border:1.5px solid var(--br);border-radius:8px;padding:9px 11px;font-family:inherit;font-size:12.5px;resize:vertical;color:var(--tx);background:#fafafa;outline:none;line-height:1.6}
+.uraian textarea:focus{border-color:var(--r);background:var(--w)}
+.uraian .hint{font-size:10.5px;color:var(--s);margin-top:5px;line-height:1.5;font-style:italic}
+.uraian-kunci{background:#f0faf4;border:1.5px solid #a8d5b8;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.65;color:#1a5c30;display:none}
+.uraian-kunci strong{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--green);margin-bottom:4px}
+
+.ilustrasi{background:#fdf8f0;border:1.5px solid #e8d9b8;border-left:3px solid var(--g);border-radius:8px;padding:10px 12px;margin:8px 14px 4px;font-size:12px;line-height:1.65;color:#3a3020}
+.ilustrasi b{color:var(--rg)}
+
+.progress-bar{margin:0 12px 12px;background:var(--w);border-radius:var(--rad);border:1.5px solid var(--br);padding:12px 14px}
+.prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--s);margin-bottom:6px}
+.prog-label span:last-child{font-weight:700;color:var(--r)}
+.prog-track{height:6px;background:var(--br);border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;background:var(--r);border-radius:3px;width:0%;transition:width .3s}
+
+.submit-wrap{margin:12px;padding:0}
+.submit-btn{width:100%;padding:14px;background:var(--rg);color:#fff;border:none;border-radius:var(--rad);font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.05em;border-bottom:4px solid #5a1210;transition:all .15s}
+.submit-btn:active{transform:translateY(2px);border-bottom-width:2px}
+.submit-btn:disabled{background:#aaa;border-bottom-color:#888;cursor:not-allowed}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--w);border-radius:16px;max-width:400px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal-hdr{background:var(--rg);padding:20px;text-align:center;border-bottom:4px solid var(--g)}
+.modal-hdr h2{font-family:'Playfair Display',serif;color:#fff;font-size:20px;margin-bottom:4px}
+.modal-hdr p{color:rgba(255,255,255,.7);font-size:12px}
+.skor-circle{width:110px;height:110px;border-radius:50%;margin:20px auto 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:5px solid var(--g);background:#fff8f0}
+.skor-circle .skor-angka{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--rg);line-height:1}
+.skor-circle .skor-max{font-size:11px;color:var(--s)}
+.skor-grade{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;text-align:center;margin-bottom:4px}
+.skor-predikat{text-align:center;font-size:12px;color:var(--s);margin-bottom:16px}
+.skor-rincian{margin:0 16px 16px;background:#f8f5f0;border-radius:8px;overflow:hidden;border:1px solid var(--br)}
+.rincian-row{display:flex;justify-content:space-between;padding:8px 12px;font-size:12px;border-bottom:1px solid var(--br)}
+.rincian-row:last-child{border-bottom:0}
+.rincian-row span:first-child{color:var(--s)}
+.rincian-row span:last-child{font-weight:700;color:var(--tx)}
+.rincian-row.highlight span:last-child{color:var(--green)}
+.modal-actions{padding:12px 16px 16px;display:flex;gap:8px}
+.modal-btn{flex:1;padding:10px;border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.modal-btn.primary{background:var(--r);color:#fff}
+.modal-btn.secondary{background:var(--br);color:var(--tx)}
+
+.review-badge{display:none;background:#e8f5ec;border:1px solid #a8d5b8;border-radius:6px;padding:6px 10px;margin:0 12px 8px;font-size:11px;color:var(--green);font-weight:600}
+
+.ftr{text-align:center;padding:18px 16px 30px;font-size:10.5px;color:var(--s);border-top:2px solid var(--br);margin-top:8px}
+hr.sep{border:none;border-top:1px dashed var(--br);margin:4px 12px 10px}
+
+/* ── Tabel soal ── */
+.tabel-soal{width:100%;border-collapse:collapse;font-size:11.5px;margin:4px 0 8px}
+.tabel-soal td,.tabel-soal th{border:1px solid var(--br);padding:5px 8px;text-align:center}
+.tabel-soal th{background:#f8f3ed;font-weight:700;color:var(--rg)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="hdr-badge">Dokumen Resmi</div>
+    <h1>PENILAIAN SUMATIF AKHIR TAHUN</h1>
+    <h2>Bahasa Indonesia – Tahun Pelajaran 2025/2026</h2>
+    <div class="hdr-meta">
+      <div class="hdr-meta-item"><strong>Sekolah</strong><span>SMA Negeri 1 Kandat</span></div>
+      <div class="hdr-meta-item"><strong>Kelas</strong><span>X-10</span></div>
+      <div class="hdr-meta-item"><strong>Waktu</strong><span>90 Menit</span></div>
+      <div class="hdr-meta-item"><strong>Jumlah Soal</strong><span>30 Soal</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- IDENTITAS -->
+<div class="identitas">
+  <h3>Identitas Peserta</h3>
+  <div class="id-row"><label>Nama</label><input type="text" id="inp-nama" placeholder="Nama lengkap"></div>
+  <div class="id-row"><label>No. Absen</label><input type="text" id="inp-absen" placeholder="Nomor absen"></div>
+  <div class="id-row"><label>Kelas</label><input type="text" value="X-10"></div>
+</div>
+
+<!-- PETUNJUK -->
+<div class="petunjuk">
+  <h3>Petunjuk Pengerjaan</h3>
+  <ol>
+    <li><b>Pilihan Ganda (No. 1–22 &amp; 25):</b> Ketuk satu pilihan yang paling tepat.</li>
+    <li><b>PG Kompleks (No. 23–24):</b> Centang <em>semua</em> pernyataan yang benar (bisa lebih dari satu).</li>
+    <li><b>Uraian (No. 26–30):</b> Tulis jawaban lengkap pada kotak yang tersedia.</li>
+    <li>Bacalah teks dengan cermat sebelum menjawab; beberapa pilihan sengaja dirancang mirip!</li>
+    <li>Tekan <b>"Kumpulkan Jawaban"</b> untuk melihat skor dan kunci jawaban.</li>
+  </ol>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-bar">
+  <div class="prog-label"><span>Progress Pengerjaan (PG &amp; PG Kompleks)</span><span id="prog-txt">0 / 24 soal</span></div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+</div>
+
+<!-- ════════════════════════════════
+     BAGIAN A — TEKS NEGOSIASI
+════════════════════════════════ -->
+<div class="seksi-hdr">
+  <span>Bagian A — Teks Negosiasi</span><small>No. 1–7</small>
+</div>
+
+<div class="bacaan">
+  <button class="bacaan-toggle open" onclick="toggleBacaan(this)">
+    📄 Bacaan 1: Negosiasi Sewa Kios (untuk soal 1–5) <span class="arrow">▲</span>
+  </button>
+  <div class="bacaan-body show">
+    <div class="judul-teks">Negosiasi Sewa Kios di Pasar Baru</div>
+    <p>Pak Hendra adalah pemilik kios di Pasar Baru Kediri. Ia berencana menyewakan kiosnya kepada Bu Ratih, seorang pedagang kerajinan tangan yang baru memulai usahanya.</p>
+    <p class="dlg"><b>Pak Hendra:</b> "Selamat pagi, Bu Ratih. Silakan masuk. Kios ini ukurannya 4×5 meter, strategis dekat pintu utama. Harga sewanya Rp18.000.000 per tahun."</p>
+    <p class="dlg"><b>Bu Ratih:</b> "Pagi, Pak. Tempatnya memang bagus. Tapi usaha saya masih baru, modal belum besar. Bisakah harganya diturunkan? Bagaimana kalau Rp12.000.000?"</p>
+    <p class="dlg"><b>Pak Hendra:</b> "Wah, itu terlalu jauh, Bu. Lokasi ini sudah terbukti ramai. Minimal harus Rp16.000.000."</p>
+    <p class="dlg"><b>Bu Ratih:</b> "Saya sangat tertarik, Pak, sungguh. Tapi dengan Rp16 juta, arus kas saya sangat terbebani. Bagaimana kalau Rp14.000.000, dan saya bayar lunas di muka hari ini?"</p>
+    <p class="dlg"><b>Pak Hendra:</b> "Hmm, bayar lunas di muka itu menarik. Baiklah, Rp14.500.000 dan saya berikan bonus rak display tambahan. Bagaimana?"</p>
+    <p class="dlg"><b>Bu Ratih:</b> "Setuju, Pak! Kita sepakati Rp14.500.000 lunas hari ini beserta rak display-nya."</p>
+  </div>
+</div>
+
+<!-- SOAL 1 -->
+<div class="soal" id="s1">
+  <div class="soal-q"><div class="soal-num">1</div>
+    <div class="soal-txt">Permasalahan <b>inti</b> yang menjadi pemicu terjadinya negosiasi antara Pak Hendra dan Bu Ratih adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s1','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Bu Ratih merasa kios berukuran 4×5 meter terlalu sempit untuk jenis usaha kerajinan tangan yang membutuhkan banyak display.</span></li>
+    <li onclick="pilih(this,'s1','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Selisih besar antara harga penawaran Pak Hendra (Rp18 juta) dan kemampuan finansial Bu Ratih yang masih terbatas sebagai pengusaha baru.</span></li>
+    <li onclick="pilih(this,'s1','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Bu Ratih mempermasalahkan bahwa kios tidak dilengkapi rak display, padahal rak sangat penting untuk usaha kerajinan.</span></li>
+    <li onclick="pilih(this,'s1','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Pak Hendra bersikeras meminta pembayaran lunas di muka, sementara Bu Ratih menginginkan sistem cicilan bulanan.</span></li>
+    <li onclick="pilih(this,'s1','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Lokasi kios yang dekat pintu utama dinilai Bu Ratih justru merugikan karena terlalu ramai dan berisik untuk memajang kerajinan.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 2 -->
+<div class="soal" id="s2">
+  <div class="soal-q"><div class="soal-num">2</div>
+    <div class="soal-txt">Kesepakatan akhir yang mencerminkan <em>win-win solution</em> dalam negosiasi tersebut adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s2','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Harga turun ke Rp14.000.000 sesuai penawaran terakhir Bu Ratih, tanpa tambahan fasilitas lain dari Pak Hendra.</span></li>
+    <li onclick="pilih(this,'s2','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Pak Hendra menurunkan harga ke Rp14.500.000 dan menambahkan rak display; Bu Ratih membayar lunas di muka — kedua pihak mendapat keuntungan nyata.</span></li>
+    <li onclick="pilih(this,'s2','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Pak Hendra mempertahankan harga Rp16.000.000 namun memberikan fasilitas rak display dan izin renovasi kios secara gratis.</span></li>
+    <li onclick="pilih(this,'s2','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Bu Ratih membayar Rp12.000.000 terlebih dahulu, sisanya dicicil tiap bulan, dan Pak Hendra menyediakan rak display.</span></li>
+    <li onclick="pilih(this,'s2','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Keduanya sepakat harga Rp15.000.000 sebagai titik tengah dari Rp12 juta dan Rp18 juta, tanpa syarat tambahan.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 3 -->
+<div class="soal" id="s3">
+  <div class="soal-q"><div class="soal-num">3</div>
+    <div class="soal-txt">Di antara kalimat-kalimat Bu Ratih berikut, yang paling tepat dikategorikan sebagai kalimat <b>persuasif strategis</b> — yakni kalimat yang menawarkan sesuatu untuk membujuk pihak lain agar mengalah — adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s3','A')"><span class="huruf-btn">A</span><span class="opsi-txt">"Tempatnya memang bagus, Pak." — memuji lokasi kios agar Pak Hendra merasa dihargai.</span></li>
+    <li onclick="pilih(this,'s3','B')"><span class="huruf-btn">B</span><span class="opsi-txt">"Usaha saya masih baru, modal belum besar." — menjelaskan kondisi keuangan untuk meminta keringanan.</span></li>
+    <li onclick="pilih(this,'s3','C')"><span class="huruf-btn">C</span><span class="opsi-txt">"Bagaimana kalau Rp14.000.000, dan saya bayar lunas di muka hari ini?" — menawarkan kepastian arus kas instan sebagai daya tawar agar harga diturunkan.</span></li>
+    <li onclick="pilih(this,'s3','D')"><span class="huruf-btn">D</span><span class="opsi-txt">"Bisakah harganya diturunkan? Bagaimana kalau Rp12.000.000?" — mengajukan penawaran harga awal sebagai pembuka negosiasi.</span></li>
+    <li onclick="pilih(this,'s3','E')"><span class="huruf-btn">E</span><span class="opsi-txt">"Setuju, Pak! Kita sepakati Rp14.500.000 lunas hari ini beserta rak display-nya." — menyatakan persetujuan atas tawaran Pak Hendra.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 4 -->
+<div class="soal" id="s4">
+  <div class="soal-q"><div class="soal-num">4</div>
+    <div class="soal-txt"><b>Argumen utama</b> yang digunakan Pak Hendra untuk mempertahankan harga sewa di atas Rp14.000.000 adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s4','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Pak Hendra baru saja merenovasi kios sehingga nilai propertinya meningkat dan tidak bisa disewa murah.</span></li>
+    <li onclick="pilih(this,'s4','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Harga sewa ditetapkan pengelola pasar dan Pak Hendra tidak punya wewenang menurunkannya secara sepihak.</span></li>
+    <li onclick="pilih(this,'s4','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Lokasi kios yang strategis dekat pintu utama sudah terbukti ramai pengunjung, menjadikannya bernilai tinggi.</span></li>
+    <li onclick="pilih(this,'s4','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Banyak calon penyewa lain yang sudah antre dan berani membayar di atas harga yang diminta Bu Ratih.</span></li>
+    <li onclick="pilih(this,'s4','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Kios tersebut pernah disewa pedagang sukses sebelumnya sehingga reputasinya mendongkrak nilai sewa.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 5 -->
+<div class="soal" id="s5">
+  <div class="soal-q"><div class="soal-num">5</div>
+    <div class="soal-txt">Kalimat: <em>"Selamat pagi, Bu Ratih. Silakan masuk. Kios ini ukurannya 4×5 meter, strategis dekat pintu utama. Harga sewanya Rp18.000.000 per tahun."</em><br>Pernyataan manakah yang paling tepat menggambarkan fungsi kalimat tersebut dalam struktur teks negosiasi?</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s5','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Termasuk bagian <b>Penawaran</b> karena Pak Hendra langsung menyebutkan harga sewa.</span></li>
+    <li onclick="pilih(this,'s5','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Termasuk bagian <b>Pengajuan</b> karena Pak Hendra menyampaikan keinginan untuk menyewakan kiosnya.</span></li>
+    <li onclick="pilih(this,'s5','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Termasuk bagian <b>Persetujuan</b> karena Pak Hendra menawarkan harga dan fasilitas secara bersamaan.</span></li>
+    <li onclick="pilih(this,'s5','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Termasuk bagian <b>Orientasi</b> karena kalimat tersebut berfungsi sebagai pembuka yang memperkenalkan situasi, objek, dan pihak yang terlibat sebelum tawar-menawar dimulai.</span></li>
+    <li onclick="pilih(this,'s5','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Termasuk bagian <b>Penutup</b> karena berisi informasi akhir yang mengikat kedua belah pihak pada kesepakatan sewa.</span></li>
+  </ul>
+</div>
+
+<div class="bacaan">
+  <button class="bacaan-toggle open" onclick="toggleBacaan(this)">
+    📄 Bacaan 2: Negosiasi Sponsor OSIS (untuk soal 6–7) <span class="arrow">▲</span>
+  </button>
+  <div class="bacaan-body show">
+    <div class="judul-teks">Negosiasi Permohonan Dana Sponsor</div>
+    <p>Ketua OSIS SMA Tunas Bangsa, Fadhil, menemui Pak Santoso, pemilik toko buku "Cerdas Bersama", untuk meminta dukungan dana kegiatan pameran karya ilmiah siswa.</p>
+    <p class="dlg"><b>Fadhil:</b> "Selamat sore, Pak Santoso. Saya Fadhil, Ketua OSIS SMA Tunas Bangsa. Kami berencana mengadakan pameran karya ilmiah siswa bulan depan dan ingin mengundang Bapak sebagai mitra sponsor."</p>
+    <p class="dlg"><b>Pak Santoso:</b> "Oh, kegiatan yang bagus. Tapi biasanya kami sponsori acara yang sudah besar, Dik."</p>
+    <p class="dlg"><b>Fadhil:</b> "Justru itu, Pak. Pameran ini akan dihadiri kurang lebih 500 orang tua siswa—yang kebanyakan adalah konsumen potensial toko buku Bapak. Kami akan menempatkan logo toko Bapak di semua banner dan brosur."</p>
+    <p class="dlg"><b>Pak Santoso:</b> "Hmm, menarik juga. Berapa dana yang kalian butuhkan?"</p>
+    <p class="dlg"><b>Fadhil:</b> "Kami membutuhkan Rp5.000.000. Sebagai timbal balik, Bapak juga bisa membuka booth promosi di area pameran secara gratis."</p>
+    <p class="dlg"><b>Pak Santoso:</b> "Rp5 juta agak berat. Bagaimana kalau Rp3.000.000 plus kami sediakan 50 buku hadiah untuk doorprize?"</p>
+    <p class="dlg"><b>Fadhil:</b> "Baik, kami terima, Pak. Rp3.000.000 dan 50 buku hadiah. Terima kasih atas dukungan Bapak untuk generasi muda!"</p>
+  </div>
+</div>
+
+<!-- SOAL 6 -->
+<div class="soal" id="s6">
+  <div class="soal-q"><div class="soal-num">6</div>
+    <div class="soal-txt">Pernyataan berikut mencerminkan <b>sikap dan etika yang tepat</b> dalam bernegosiasi, <em>kecuali</em> …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s6','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Menyampaikan argumen secara logis dan terukur, bukan sekadar berdasarkan perasaan atau emosi.</span></li>
+    <li onclick="pilih(this,'s6','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Bersedia mendengarkan dan mempertimbangkan perspektif mitra bicara sebelum merespons.</span></li>
+    <li onclick="pilih(this,'s6','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Menegaskan posisi dengan keras dan tidak memberi ruang kompromi demi mendapat hasil maksimal bagi pihak sendiri.</span></li>
+    <li onclick="pilih(this,'s6','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Mencari titik temu yang menguntungkan kedua belah pihak, bukan hanya satu pihak.</span></li>
+    <li onclick="pilih(this,'s6','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Menawarkan alternatif kreatif jika tawaran awal ditolak, agar negosiasi tidak buntu.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 7 -->
+<div class="soal" id="s7">
+  <div class="soal-q"><div class="soal-num">7</div>
+    <div class="soal-txt">Perhatikan empat kalimat berikut.<br>
+    <b>(1)</b> "Saya minta harganya diturunkan jadi Rp50.000 per unit."<br>
+    <b>(2)</b> "Selamat sore, saya Dina. Saya ingin membicarakan pembelian tas kulit dalam jumlah besar."<br>
+    <b>(3)</b> "Baiklah, kita sepakati harga Rp65.000 per unit mulai hari ini."<br>
+    <b>(4)</b> "Bagaimana kalau harganya saya kurangi 10% dan ditambah gratis ongkir?"<br>
+    Yang merupakan contoh bagian <b>Orientasi</b> dalam struktur teks negosiasi adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s7','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Kalimat (1), karena berisi permintaan spesifik yang menjadi titik awal tawar-menawar.</span></li>
+    <li onclick="pilih(this,'s7','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Kalimat (2), karena berfungsi sebagai salam pembuka dan pengenalan tujuan sebelum negosiasi dimulai.</span></li>
+    <li onclick="pilih(this,'s7','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Kalimat (3), karena merupakan pernyataan final yang mengikat kedua pihak pada kesepakatan.</span></li>
+    <li onclick="pilih(this,'s7','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Kalimat (4), karena menawarkan penawaran alternatif yang merupakan inti dari proses negosiasi.</span></li>
+    <li onclick="pilih(this,'s7','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Kalimat (1) dan (4), karena keduanya sama-sama mengajukan angka/tawaran konkret kepada mitra bicara.</span></li>
+  </ul>
+</div>
+
+<!-- ════════════════════════════════
+     BAGIAN B — TEKS BIOGRAFI
+════════════════════════════════ -->
+<div class="seksi-hdr" style="margin-top:10px">
+  <span>Bagian B — Teks Biografi</span><small>No. 8–12 &amp; 21–25</small>
+</div>
+
+<div class="bacaan">
+  <button class="bacaan-toggle open" onclick="toggleBacaan(this)">
+    📄 Bacaan 3: B.J. Habibie – Jenius dari Parepare (untuk soal 8–12, 21–25) <span class="arrow">▲</span>
+  </button>
+  <div class="bacaan-body show">
+    <div class="judul-teks">B.J. Habibie – Jenius dari Parepare</div>
+    <p>Bacharuddin Jusuf Habibie lahir di Parepare, Sulawesi Selatan, 25 Juni 1936. Sejak kecil ia dikenal cerdas luar biasa dan gemar membaca buku teknik dan sains jauh sebelum usia yang lazim. Disiplin belajarnya yang keras mengantarkannya meraih gelar doktor di RWTH Aachen, Jerman, dengan predikat <em>summa cum laude</em> pada 1965.</p>
+    <p>Di Jerman, Habibie bekerja di perusahaan Messerschmitt-Bölkow-Blohm (MBB) dan menemukan teori revolusioner tentang distribusi tegangan pada sambungan sayap dan badan pesawat. Teori ini dikenal di seluruh dunia sebagai <b>"Faktor Habibie"</b> dan mengubah standar keselamatan industri penerbangan global.</p>
+    <p>Pada 1974, atas permintaan Presiden Soeharto, Habibie pulang ke Indonesia. Meski tawaran karier di Eropa jauh lebih menggiurkan, ia memilih tanah air. Ia mendirikan PT IPTN dan memproduksi pesawat <b>N-250 Gatotkaca</b>, pesawat turboprop pertama yang sepenuhnya dirancang dan diproduksi putra-putri Indonesia.</p>
+    <p>Habibie percaya teknologi adalah kunci kemandirian bangsa. Ia pernah berkata, <em>"Saya lebih suka membangun bangsa ini dengan otak, bukan sekadar dengan otot."</em> Ia wafat 11 September 2019 dan dikenang sebagai salah satu putra terbaik Indonesia sepanjang masa.</p>
+  </div>
+</div>
+
+<!-- SOAL 8 -->
+<div class="soal" id="s8">
+  <div class="soal-q"><div class="soal-num">8</div>
+    <div class="soal-txt"><b>Karakter unggul</b> yang paling tepat mencerminkan sikap Habibie ketika ia menolak tawaran karier gemilang di Eropa demi pulang ke Indonesia adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s8','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Penurut dan loyal — ia hanya menjalankan perintah Presiden Soeharto tanpa pertimbangan pribadi.</span></li>
+    <li onclick="pilih(this,'s8','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Nasionalis dan rela berkorban — ia mengutamakan kemajuan bangsa di atas kepentingan karier pribadi.</span></li>
+    <li onclick="pilih(this,'s8','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Ambisius dan visioner — ia melihat peluang bisnis lebih besar di Indonesia daripada di Eropa.</span></li>
+    <li onclick="pilih(this,'s8','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Pragmatis dan realistis — ia menilai bahwa kondisi industri penerbangan Eropa mulai menurun sehingga lebih menguntungkan kembali ke Indonesia.</span></li>
+    <li onclick="pilih(this,'s8','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Idealis murni — ia menolak seluruh tawaran materi dari Eropa karena prinsip antikapitalismenya.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 9 -->
+<div class="soal" id="s9">
+  <div class="soal-q"><div class="soal-num">9</div>
+    <div class="soal-txt">Berdasarkan teks, alasan yang paling tepat mengapa teori Habibie diabadikan dengan sebutan <b>"Faktor Habibie"</b> dan diakui secara global adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s9','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Habibie adalah satu-satunya ilmuwan Asia yang pernah bekerja di perusahaan penerbangan bergengsi Eropa pada era itu.</span></li>
+    <li onclick="pilih(this,'s9','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Teori tersebut lahir dari disiplin belajar keras sejak kecil dan lulus doktor dengan predikat tertinggi — dua hal yang membuat dunia internasional mengakuinya.</span></li>
+    <li onclick="pilih(this,'s9','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Teori tersebut memberikan kontribusi revolusioner tentang distribusi tegangan pada konstruksi pesawat sehingga mengubah standar keselamatan industri penerbangan global.</span></li>
+    <li onclick="pilih(this,'s9','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Teori itu secara langsung diaplikasikan dalam perancangan N-250 Gatotkaca dan terbukti membuat pesawat tersebut diakui dunia internasional.</span></li>
+    <li onclick="pilih(this,'s9','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Nama "Faktor Habibie" diberikan oleh pemerintah Indonesia sebagai penghargaan atas jasa Habibie yang pulang ke tanah air meninggalkan karier di Eropa.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 10 -->
+<div class="soal" id="s10">
+  <div class="soal-q"><div class="soal-num">10</div>
+    <div class="soal-txt">Pernyataan manakah yang <b>sesuai</b> dengan isi teks biografi Habibie?</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s10','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Habibie lahir di Makassar dan meraih gelar doktor di Universitas Berlin dengan predikat <em>cum laude</em>.</span></li>
+    <li onclick="pilih(this,'s10','B')"><span class="huruf-btn">B</span><span class="opsi-txt">N-250 Gatotkaca adalah pesawat <em>jet</em> pertama yang sepenuhnya dirancang dan diproduksi Indonesia — sebuah pencapaian bersejarah.</span></li>
+    <li onclick="pilih(this,'s10','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Habibie kembali ke Indonesia atas inisiatif sendiri pada 1974 tanpa ada permintaan resmi dari pemerintah.</span></li>
+    <li onclick="pilih(this,'s10','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Habibie meraih doktor <em>summa cum laude</em> di RWTH Aachen dan menemukan "Faktor Habibie" yang mengubah standar keselamatan penerbangan global.</span></li>
+    <li onclick="pilih(this,'s10','E')"><span class="huruf-btn">E</span><span class="opsi-txt">PT IPTN didirikan Habibie setelah ia pensiun dari jabatan Presiden RI sebagai wujud sumbangsih pada negara.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 11 -->
+<div class="soal" id="s11">
+  <div class="soal-q"><div class="soal-num">11</div>
+    <div class="soal-txt">Makna <b>terdalam</b> dari kalimat filosofis Habibie: <em>"Saya lebih suka membangun bangsa ini dengan otak, bukan sekadar dengan otot"</em> adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s11','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Habibie secara harfiah lebih menyukai pekerjaan di balik meja daripada pekerjaan lapangan yang membutuhkan tenaga fisik.</span></li>
+    <li onclick="pilih(this,'s11','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Kemajuan sejati suatu bangsa harus bertumpu pada penguasaan ilmu dan teknologi, bukan hanya mengandalkan kekuatan fisik atau kekayaan alam semata.</span></li>
+    <li onclick="pilih(this,'s11','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Habibie mengkritik budaya kerja keras fisik masyarakat Indonesia dan mendorong seluruh warga untuk beralih ke profesi akademis.</span></li>
+    <li onclick="pilih(this,'s11','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Indonesia tidak perlu lagi mengembangkan sektor pertanian atau industri manual karena teknologi sudah bisa menggantikan segalanya.</span></li>
+    <li onclick="pilih(this,'s11','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Kecerdasan intelektual selalu lebih unggul dari kecerdasan emosional dan sosial dalam membangun peradaban suatu bangsa.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 12 -->
+<div class="soal" id="s12">
+  <div class="soal-q"><div class="soal-num">12</div>
+    <div class="soal-txt">Nilai keteladanan yang <b>paling utama dan komprehensif</b> dari perjuangan hidup B.J. Habibie secara keseluruhan adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s12','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Merantau ke luar negeri untuk menuntut ilmu setinggi-tingginya, lalu menetap di sana demi mengejar karier internasional yang gemilang.</span></li>
+    <li onclick="pilih(this,'s12','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Belajar sungguh-sungguh sejak kecil, menguasai keahlian tinggi di bidang teknologi, lalu mengabdikan ilmu itu untuk membangun kemajuan bangsa dengan jiwa nasionalis.</span></li>
+    <li onclick="pilih(this,'s12','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Selalu mematuhi perintah pemimpin negara dengan penuh dedikasi, bahkan ketika hal itu berarti mengorbankan kebahagiaan pribadi dan keluarga.</span></li>
+    <li onclick="pilih(this,'s12','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Fokus mendalami satu bidang ilmu saja sejak dini — yakni teknik penerbangan — tanpa tergoda oleh bidang lain, sehingga menjadi yang terbaik di dunia.</span></li>
+    <li onclick="pilih(this,'s12','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Memanfaatkan koneksi dan relasi politik di tingkat tertinggi untuk mewujudkan proyek-proyek teknologi nasional berskala besar.</span></li>
+  </ul>
+</div>
+
+<!-- ════════════════════════════════
+     BAGIAN C — TEKS PUISI
+════════════════════════════════ -->
+<div class="seksi-hdr" style="margin-top:10px">
+  <span>Bagian C — Teks Puisi</span><small>No. 13–20</small>
+</div>
+
+<div class="bacaan">
+  <button class="bacaan-toggle open" onclick="toggleBacaan(this)">
+    📄 Puisi 1: "Doa untuk Negeri" (untuk soal 13–17) <span class="arrow">▲</span>
+  </button>
+  <div class="bacaan-body show">
+    <div class="puisi-blok">
+      <div class="pjdl">Doa untuk Negeri</div>
+      <div class="pkrya">— Karya: Soal PSAT 2025/2026 —</div>
+      Di ladang tandus kami menabur benih<br>
+      Menunggu hujan yang tak kunjung tiba<br>
+      Langit biru seluas samudra<br>
+      Namun awan pun enggan mampir ke sini<br><br>
+      Anak-anak berlari di atas tanah retak<br>
+      Tawa mereka bagai embun pagi<br>
+      Yang sebentar saja menyapa bumi<br>
+      Lalu lenyap ditelan terik matahari<br><br>
+      Di sana gedung-gedung mencakar langit<br>
+      Lampunya berkilau seperti bintang-bintang<br>
+      Di sini kami menghitung beras di kentongan<br>
+      Seraya berdoa agar esok masih ada<br><br>
+      Tapi akar kami dalam menghujam<br>
+      Tak ada badai yang sanggup mencabut<br>
+      Kami adalah pohon-pohon yang berdiri tegak<br>
+      Di antara kesulitan yang tak pernah usai
+    </div>
+  </div>
+</div>
+
+<!-- SOAL 13 -->
+<div class="soal" id="s13">
+  <div class="soal-q"><div class="soal-num">13</div>
+    <div class="soal-txt">Perhatikan larik-larik berikut dari puisi "Doa untuk Negeri":<br>
+    <b>(I)</b> "Tawa mereka <u>bagai</u> embun pagi"<br>
+    <b>(II)</b> "Kami <u>adalah</u> pohon-pohon yang berdiri tegak"<br>
+    <b>(III)</b> "Lampunya berkilau <u>seperti</u> bintang-bintang"<br>
+    <b>(IV)</b> "Tapi akar kami dalam menghujam"<br>
+    Larik yang mengandung majas <b>simile</b> (perumpamaan) adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s13','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Hanya larik (I), karena menggunakan kata "bagai" yang merupakan penanda simile.</span></li>
+    <li onclick="pilih(this,'s13','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Larik (I) dan (III), karena keduanya menggunakan kata penanda perbandingan eksplisit ("bagai" dan "seperti") — ciri khas majas simile.</span></li>
+    <li onclick="pilih(this,'s13','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Larik (I) dan (II), karena keduanya membandingkan sesuatu, meskipun (II) menggunakan kata "adalah".</span></li>
+    <li onclick="pilih(this,'s13','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Larik (II) dan (III), karena keduanya sama-sama menyandingkan dua hal yang berbeda dalam satu larik.</span></li>
+    <li onclick="pilih(this,'s13','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Larik (I), (II), dan (III) — ketiganya mengandung simile karena masing-masing membandingkan dua unsur yang berbeda.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 14 -->
+<div class="soal" id="s14">
+  <div class="soal-q"><div class="soal-num">14</div>
+    <div class="soal-txt">Jika puisi "Doa untuk Negeri" dijadikan <b>musikalisasi puisi</b>, perpaduan suasana (mood) musik yang paling tepat mencerminkan keseluruhan isi puisi — dari bait pertama hingga keempat — adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s14','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Penuh semangat dan optimis dari awal hingga akhir, karena bait keempat menunjukkan kemenangan rakyat atas kesulitan.</span></li>
+    <li onclick="pilih(this,'s14','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Melankolis dan menyerah dari awal hingga akhir, karena tema besar puisi adalah kemiskinan yang tak pernah berakhir.</span></li>
+    <li onclick="pilih(this,'s14','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Sendu dan berat di awal (bait 1–3), lalu beralih ke akord kokoh dan teguh di bait terakhir — mencerminkan perjalanan dari keluhan menuju keteguhan tekad.</span></li>
+    <li onclick="pilih(this,'s14','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Marah dan penuh amarah sepanjang puisi, karena penyair memprotes keras ketidakadilan sosial yang dialami rakyat kecil.</span></li>
+    <li onclick="pilih(this,'s14','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Riang di bait kedua (karena tawa anak-anak), kemudian menjadi sedih di bait ketiga, lalu kembali riang di bait keempat.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 15 -->
+<div class="soal" id="s15">
+  <div class="soal-q"><div class="soal-num">15</div>
+    <div class="soal-txt"><b>Makna simbolik</b> yang paling tepat dari larik <em>"Di ladang tandus kami menabur benih / Menunggu hujan yang tak kunjung tiba"</em> adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s15','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Gambaran konkret para petani yang tetap bekerja di musim kemarau panjang meski hasil panen tidak pasti.</span></li>
+    <li onclick="pilih(this,'s15','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Simbolisasi kondisi rakyat kecil yang terus berjuang di tengah keterbatasan, sambil menanti perubahan atau bantuan yang belum juga terwujud.</span></li>
+    <li onclick="pilih(this,'s15','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Kritik langsung terhadap pemerintah yang gagal mendistribusikan irigasi dan bantuan pertanian ke daerah terpencil.</span></li>
+    <li onclick="pilih(this,'s15','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Harapan generasi muda agar segera lahir pemimpin baru yang mampu membawa perubahan nyata bagi negeri.</span></li>
+    <li onclick="pilih(this,'s15','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Kisah seorang guru yang terus mendidik murid-muridnya meski tidak mendapat apresiasi dari pemerintah maupun orang tua.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 16 -->
+<div class="soal" id="s16">
+  <div class="soal-q"><div class="soal-num">16</div>
+    <div class="soal-txt"><b>Kritik sosial</b> yang paling kuat terkandung dalam kontras bait ketiga: <em>"Di sana gedung-gedung mencakar langit … Di sini kami menghitung beras di kentongan"</em> adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s16','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Kemiskinan di pedesaan semata-mata disebabkan oleh rendahnya etos kerja masyarakat desa yang tidak mau beradaptasi dengan kemajuan.</span></li>
+    <li onclick="pilih(this,'s16','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Penyair mengajak masyarakat desa untuk berpindah ke kota demi menikmati fasilitas dan kemakmuran yang sudah tersedia di sana.</span></li>
+    <li onclick="pilih(this,'s16','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Kesenjangan mencolok antara kemewahan perkotaan yang terus tumbuh dan perjuangan rakyat kecil di pedesaan yang masih berjuang memenuhi kebutuhan pangan dasar.</span></li>
+    <li onclick="pilih(this,'s16','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Perkembangan kota dengan gedung-gedung pencakar langit adalah pencapaian positif yang tidak ada kaitannya dengan kemiskinan di desa.</span></li>
+    <li onclick="pilih(this,'s16','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Kemiskinan di pedesaan disebabkan oleh kelebihan jumlah penduduk, bukan oleh ketimpangan pembangunan antara kota dan desa.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 17 -->
+<div class="soal" id="s17">
+  <div class="soal-q"><div class="soal-num">17</div>
+    <div class="soal-txt"><b>Amanat</b> yang paling tepat terkandung dari <em>kontras</em> antara bait ketiga (kesenjangan sosial) dan bait keempat (akar yang dalam/pohon yang tegak) adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s17','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Rakyat miskin harus menerima nasib dengan ikhlas karena kesenjangan sosial adalah bagian dari takdir yang tidak bisa diubah manusia.</span></li>
+    <li onclick="pilih(this,'s17','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Satu-satunya cara mengubah nasib rakyat kecil adalah melalui perlawanan keras dan revolusi sosial yang radikal.</span></li>
+    <li onclick="pilih(this,'s17','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Di tengah kesenjangan dan penderitaan, keteguhan hati dan semangat pantang menyerah adalah kekuatan sejati rakyat yang tidak bisa direbut oleh siapa pun.</span></li>
+    <li onclick="pilih(this,'s17','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Pemerintah bertanggung jawab penuh atas seluruh kesulitan rakyat, dan rakyat cukup menunggu hingga kebijakan yang adil diterapkan.</span></li>
+    <li onclick="pilih(this,'s17','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Kekuatan alam — seperti akar pohon dan badai — adalah metafora bahwa alam lebih kuat dari segala masalah sosial yang dibuat manusia.</span></li>
+  </ul>
+</div>
+
+<div class="bacaan">
+  <button class="bacaan-toggle open" onclick="toggleBacaan(this)">
+    📄 Puisi 2: "Perempuan di Ladang Garam" (untuk soal 18–20) <span class="arrow">▲</span>
+  </button>
+  <div class="bacaan-body show">
+    <div class="puisi-blok">
+      <div class="pjdl">Perempuan di Ladang Garam</div>
+      <div class="pkrya">— Karya: Soal PSAT 2025/2026 —</div>
+      Perempuan itu berdiri di tepi ladang<br>
+      Kulitnya seperti kulit kayu yang dibakar matahari<br>
+      Tangannya mengais kristal putih dari lumpur<br>
+      Bagai memungut serpihan harapan yang tersisa<br><br>
+      Angin laut bersiul di antara rambutnya<br>
+      Ia tidak mendengar—hanya menghitung<br>
+      Berapa karung hari ini, berapa rupiah esok<br>
+      Cukupkah untuk sekolah si bungsu yang cerdas?<br><br>
+      Matahari adalah penguasa yang kejam<br>
+      Membakar tanpa ampun dari fajar hingga senja<br>
+      Namun perempuan itu tidak mundur<br>
+      Karena di punggungnya ada mimpi-mimpi anaknya
+    </div>
+  </div>
+</div>
+
+<!-- SOAL 18 -->
+<div class="soal" id="s18">
+  <div class="soal-q"><div class="soal-num">18</div>
+    <div class="soal-txt">Perhatikan dua larik berikut:<br>
+    <b>(P)</b> "Kulitnya <u>seperti</u> kulit kayu yang dibakar matahari"<br>
+    <b>(Q)</b> "Matahari <u>adalah</u> penguasa yang kejam"<br>
+    Identifikasi majas yang tepat untuk masing-masing larik tersebut adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s18','A')"><span class="huruf-btn">A</span><span class="opsi-txt">(P) metafora — karena membandingkan kulit manusia dengan kulit kayu; (Q) personifikasi — karena matahari diberi sifat manusia.</span></li>
+    <li onclick="pilih(this,'s18','B')"><span class="huruf-btn">B</span><span class="opsi-txt">(P) simile — karena membandingkan menggunakan kata "seperti"; (Q) metafora — karena menyamakan matahari dengan penguasa tanpa kata pembanding eksplisit.</span></li>
+    <li onclick="pilih(this,'s18','C')"><span class="huruf-btn">C</span><span class="opsi-txt">(P) hiperbola — karena berlebihan menggambarkan kondisi kulit; (Q) simile — karena "adalah" berfungsi seperti kata pembanding.</span></li>
+    <li onclick="pilih(this,'s18','D')"><span class="huruf-btn">D</span><span class="opsi-txt">(P) simile — karena menggunakan kata "seperti"; (Q) personifikasi — karena matahari diberi watak dan perilaku manusia (penguasa yang kejam).</span></li>
+    <li onclick="pilih(this,'s18','E')"><span class="huruf-btn">E</span><span class="opsi-txt">(P) alegori — karena kulit kayu melambangkan kerja keras; (Q) metafora — karena matahari disebut sebagai penguasa.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 19 -->
+<div class="soal" id="s19">
+  <div class="soal-q"><div class="soal-num">19</div>
+    <div class="soal-txt"><b>Makna simbolik</b> yang paling tepat dari larik <em>"karena di punggungnya ada mimpi-mimpi anaknya"</em> adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s19','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Sang ibu secara harfiah menggendong anaknya di punggung selama bekerja di ladang garam agar anak tetap aman.</span></li>
+    <li onclick="pilih(this,'s19','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Sang ibu merasa terbebani oleh harapan anaknya sehingga punggungnya terasa sakit dan badannya membungkuk saat bekerja.</span></li>
+    <li onclick="pilih(this,'s19','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Cinta dan pengorbanan seorang ibu yang menjadikan harapan serta masa depan anaknya sebagai sumber kekuatan untuk terus berjuang.</span></li>
+    <li onclick="pilih(this,'s19','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Anak-anak bermimpi suatu hari nanti menjadi petani garam seperti ibunya, melanjutkan tradisi keluarga turun-temurun.</span></li>
+    <li onclick="pilih(this,'s19','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Sang ibu mengajarkan anaknya tentang kerja keras melalui contoh nyata agar kelak anak tidak takut bekerja kasar.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 20 -->
+<div class="soal" id="s20">
+  <div class="soal-q"><div class="soal-num">20</div>
+    <div class="soal-txt"><b>Citraan (imaji) dominan</b> dalam larik <em>"Angin laut bersiul di antara rambutnya"</em> adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s20','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Citraan visual (penglihatan) dan taktil (perabaan), karena pembaca dapat membayangkan angin yang menggerakkan rambut secara fisik.</span></li>
+    <li onclick="pilih(this,'s20','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Citraan pendengaran (auditif) dan kinestetik (gerak), diperkuat majas personifikasi pada kata "bersiul" yang menyifatkan angin seolah makhluk hidup.</span></li>
+    <li onclick="pilih(this,'s20','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Citraan penciuman (olfaktori) dan penglihatan (visual), karena angin laut membawa aroma khas dan pemandangan alam yang indah.</span></li>
+    <li onclick="pilih(this,'s20','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Citraan perabaan (taktil) murni, karena angin yang berhembus melalui rambut hanya dapat dirasakan oleh indra kulit.</span></li>
+    <li onclick="pilih(this,'s20','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Citraan pengecapan (gustatori) dan penciuman (olfaktori), karena angin laut mengandung aroma dan rasa garam yang kuat.</span></li>
+  </ul>
+</div>
+
+<!-- ════ Biografi lanjut ════ -->
+<hr class="sep">
+
+<!-- SOAL 21 -->
+<div class="soal" id="s21">
+  <div class="soal-q"><div class="soal-num">21</div>
+    <div class="soal-txt"><b>Bukti tekstual</b> yang paling tepat menunjukkan bahwa Habibie memiliki rasa ingin tahu intelektual tinggi sejak masa kecil adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s21','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Ia berhasil mendapat beasiswa penuh untuk melanjutkan studi teknik di universitas terbaik Jerman.</span></li>
+    <li onclick="pilih(this,'s21','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Ia gemar membaca buku teknik dan sains jauh sebelum usia yang lazim — jauh melampaui materi yang diajarkan di sekolah.</span></li>
+    <li onclick="pilih(this,'s21','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Ia meraih gelar doktor dengan predikat summa cum laude di RWTH Aachen, Jerman — pencapaian akademis tertinggi.</span></li>
+    <li onclick="pilih(this,'s21','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Ia berhasil bekerja di MBB, perusahaan penerbangan terkemuka di Eropa, sejak usia yang masih muda.</span></li>
+    <li onclick="pilih(this,'s21','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Ia disiplin belajar dengan keras sehingga mampu menyelesaikan studi doktornya dalam waktu yang relatif singkat.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 22 -->
+<div class="soal" id="s22">
+  <div class="soal-q"><div class="soal-num">22</div>
+    <div class="soal-txt"><b>Simpulan</b> yang paling tepat tentang bentuk nasionalisme Habibie berdasarkan teks adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s22','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Nasionalisme Habibie bersifat emosional semata — ia pulang ke Indonesia karena tidak betah hidup jauh dari keluarga dan tanah kelahirannya.</span></li>
+    <li onclick="pilih(this,'s22','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Habibie menunjukkan bahwa mencintai negara tidak harus berarti menutup diri dari dunia internasional — kunci nasionalisme adalah siap menggunakan ilmu untuk bangsa.</span></li>
+    <li onclick="pilih(this,'s22','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Nasionalisme sejati Habibie diwujudkan dengan pengorbanan nyata: meninggalkan kemapanan karier di Eropa dan menggunakan keahlian terbaiknya untuk membangun Indonesia.</span></li>
+    <li onclick="pilih(this,'s22','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Nasionalisme Habibie dibuktikan melalui pidato-pidato politiknya yang membakar semangat rakyat Indonesia untuk bangkit dan mandiri.</span></li>
+    <li onclick="pilih(this,'s22','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Habibie membuktikan bahwa nasionalisme terbaik adalah bekerja di luar negeri dan mengirimkan devisa sebesar-besarnya untuk pembangunan Indonesia.</span></li>
+  </ul>
+</div>
+
+<!-- SOAL 23 — PG KOMPLEKS -->
+<div class="soal" id="s23">
+  <div class="soal-q"><div class="soal-num">23</div>
+    <div class="soal-txt"><span class="soal-tipe">PG Kompleks</span><br>Centang semua pernyataan yang <b>BENAR</b> berdasarkan teks biografi Habibie! (Bisa lebih dari satu jawaban benar)</div>
+  </div>
+  <div class="pgk" id="pgk23">
+    <label><input type="checkbox" onchange="updateProg()"> Habibie menyelesaikan program doktor di RWTH Aachen, Jerman, dengan predikat <em>summa cum laude</em> pada tahun 1965.</label>
+    <label><input type="checkbox" onchange="updateProg()"> "Faktor Habibie" ditemukan setelah Habibie pulang ke Indonesia dan mendirikan PT IPTN pada 1974.</label>
+    <label><input type="checkbox" onchange="updateProg()"> N-250 Gatotkaca adalah pesawat turboprop pertama yang sepenuhnya dirancang dan diproduksi oleh putra-putri Indonesia.</label>
+    <label><input type="checkbox" onchange="updateProg()"> Habibie bekerja di perusahaan MBB di Jerman sebelum akhirnya kembali ke Indonesia atas permintaan Presiden Soeharto.</label>
+    <label><input type="checkbox" onchange="updateProg()"> Berdasarkan teks, Habibie lahir di Makassar — ibu kota Sulawesi Selatan — bukan di Parepare.</label>
+  </div>
+</div>
+
+<!-- SOAL 24 — PG KOMPLEKS -->
+<div class="soal" id="s24">
+  <div class="soal-q"><div class="soal-num">24</div>
+    <div class="soal-txt"><span class="soal-tipe">PG Kompleks</span><br>Pernyataan berikut berkaitan dengan latar belakang intelektual Habibie. Centang yang <b>BENAR</b> berdasarkan teks! (Bisa lebih dari satu)</div>
+  </div>
+  <div class="pgk" id="pgk24">
+    <label><input type="checkbox" onchange="updateProg()"> Kebiasaan belajar yang disiplin dan keras sejak masa kecil merupakan pondasi keberhasilan intelektualnya.</label>
+    <label><input type="checkbox" onchange="updateProg()"> Habibie menempuh studi teknik penerbangan hingga jenjang doktor di universitas bergengsi Jerman.</label>
+    <label><input type="checkbox" onchange="updateProg()"> Pengalaman bekerja langsung di industri penerbangan Eropa (MBB) memberikan konteks nyata bagi penemuannya.</label>
+    <label><input type="checkbox" onchange="updateProg()"> Pemerintah Indonesia memberikan dukungan finansial besar dan beasiswa khusus selama Habibie menempuh studi di Jerman.</label>
+    <label><input type="checkbox" onchange="updateProg()"> Minat besar pada sains dan teknik yang tumbuh sejak masa kecil mendorong Habibie mendalami bidang tersebut secara serius.</label>
+  </div>
+</div>
+
+<!-- SOAL 25 -->
+<div class="soal" id="s25">
+  <div class="soal-q"><div class="soal-num">25</div>
+    <div class="soal-txt">Dalam konteks kehidupan siswa masa kini, hal yang <b>paling relevan dan bermakna</b> untuk diteladani dari Habibie adalah …</div>
+  </div>
+  <ul class="pilihan">
+    <li onclick="pilih(this,'s25','A')"><span class="huruf-btn">A</span><span class="opsi-txt">Bercita-cita bekerja di perusahaan multinasional luar negeri agar mendapat penghasilan tinggi dan diakui dunia internasional.</span></li>
+    <li onclick="pilih(this,'s25','B')"><span class="huruf-btn">B</span><span class="opsi-txt">Memilih jurusan teknik penerbangan karena itulah bidang yang paling bergengsi dan memiliki prospek karier terluas di era modern.</span></li>
+    <li onclick="pilih(this,'s25','C')"><span class="huruf-btn">C</span><span class="opsi-txt">Belajar dengan sungguh-sungguh, mendalami keahlian secara serius, dan menjadikan ilmu itu sebagai kontribusi nyata bagi masyarakat dan bangsa — bukan hanya untuk kepentingan diri sendiri.</span></li>
+    <li onclick="pilih(this,'s25','D')"><span class="huruf-btn">D</span><span class="opsi-txt">Mencontoh kesederhanaan gaya hidup Habibie yang tetap hidup hemat dan bersahaja meskipun memiliki penghasilan dan jabatan tinggi.</span></li>
+    <li onclick="pilih(this,'s25','E')"><span class="huruf-btn">E</span><span class="opsi-txt">Selalu mengutamakan studi di luar negeri karena kualitas pendidikan internasional terbukti menghasilkan ilmuwan sekaliber Habibie.</span></li>
+  </ul>
+</div>
+
+<!-- ════════════════════════════════
+     BAGIAN D — URAIAN
+════════════════════════════════ -->
+<div class="seksi-hdr" style="margin-top:10px">
+  <span>Bagian D — Uraian</span><small>No. 26–30</small>
+</div>
+
+<!-- SOAL 26 -->
+<div class="soal" id="s26">
+  <div class="soal-q"><div class="soal-num">26</div>
+    <div class="soal-txt">Analisislah <b>citraan (imaji)</b> yang terdapat dalam bait pertama puisi "Doa untuk Negeri"! Jelaskan pula alasan penyair memilih diksi <em>"tandus," "benih,"</em> dan <em>"hujan"</em> untuk menyampaikan pesannya!</div>
+  </div>
+  <div class="uraian">
+    <textarea id="u26" placeholder="Sebutkan jenis citraan beserta lariknya, lalu jelaskan hubungan diksi dengan makna/pesan puisi…"></textarea>
+    <div class="hint">💡 Panduan: Sebutkan jenis citraan + contoh larik, jelaskan makna setiap diksi, dan kaitkan dengan pesan penyair. (±5–8 kalimat)</div>
+    <div class="uraian-kunci" id="kunci26">
+      <strong>✅ Kunci/Pedoman Jawaban:</strong>
+      Bait pertama mengandung <b>citraan visual</b> ("ladang tandus", "langit biru") dan <b>citraan taktil/perasaan</b> ("menunggu hujan yang tak kunjung tiba"). Diksi <em>tandus</em> melambangkan kondisi hidup yang kering dan penuh kesulitan — bukan sekadar tanah gersang secara harfiah. Diksi <em>benih</em> melambangkan harapan dan usaha yang terus ditanam meski situasi tidak mendukung. Diksi <em>hujan</em> melambangkan perubahan, bantuan, atau keadilan yang ditunggu-tunggu namun belum juga datang. Ketiganya membentuk simbolisme utuh: rakyat kecil terus berjuang (menabur benih) di tengah kesengsaraan (ladang tandus) sambil menantikan perubahan nyata (hujan).
+    </div>
+  </div>
+</div>
+
+<!-- SOAL 27 -->
+<div class="soal" id="s27">
+  <div class="soal-q"><div class="soal-num">27</div>
+    <div class="soal-txt">Jelaskan <b>pesan moral</b> dan <b>prinsip hidup</b> yang terkandung dalam puisi "Doa untuk Negeri" secara keseluruhan! Hubungkan dengan realitas kehidupan yang kamu ketahui!</div>
+  </div>
+  <div class="uraian">
+    <textarea id="u27" placeholder="Tuliskan minimal 2 pesan moral dan kaitkan dengan contoh nyata dalam kehidupan…"></textarea>
+    <div class="hint">💡 Panduan: Uraikan ≥2 pesan moral, kaitkan dengan contoh nyata, dan tulis dengan kalimat lengkap. (±5–8 kalimat)</div>
+    <div class="uraian-kunci" id="kunci27">
+      <strong>✅ Kunci/Pedoman Jawaban:</strong>
+      Pesan moral 1: <b>Ketabahan dan semangat pantang menyerah</b> adalah kekuatan sejati — dilambangkan lewat metafora pohon-pohon yang berdiri tegak meski badai. Relevansi: banyak pelajar dari keluarga kurang mampu tetap berprestasi meskipun fasilitas terbatas. Pesan moral 2: <b>Kesenjangan sosial adalah masalah nyata</b> yang harus disadari dan diperjuangkan bersama, bukan diabaikan. Relevansi: perbedaan fasilitas sekolah di kota dan desa hingga kini masih terasa nyata. Prinsip hidup: meski nasib belum berpihak, manusia tidak boleh berhenti berusaha dan berdoa, karena keberanian bertahan adalah bentuk kemuliaan tersendiri.
+    </div>
+  </div>
+</div>
+
+<!-- SOAL 28 -->
+<div class="soal" id="s28">
+  <div class="soal-q"><div class="soal-num">28</div>
+    <div class="soal-txt">Sebutkan dan jelaskan <b>minimal dua prestasi luar biasa</b> (nasional/internasional) B.J. Habibie berdasarkan teks biografi! Mengapa prestasi tersebut penting bagi Indonesia?</div>
+  </div>
+  <div class="uraian">
+    <textarea id="u28" placeholder="Sebutkan prestasi secara spesifik, jelaskan dampaknya, dan hubungkan dengan kebanggaan nasional…"></textarea>
+    <div class="hint">💡 Panduan: Sebutkan prestasi spesifik, jelaskan dampak/signifikansinya, kaitkan dengan kebanggaan Indonesia. (±5–8 kalimat)</div>
+    <div class="uraian-kunci" id="kunci28">
+      <strong>✅ Kunci/Pedoman Jawaban:</strong>
+      Prestasi 1: <b>Menemukan "Faktor Habibie"</b> — teori revolusioner tentang distribusi tegangan pada sambungan sayap dan badan pesawat yang mengubah standar keselamatan industri penerbangan global. Penting bagi Indonesia karena membuktikan putra bangsa mampu berkontribusi ilmiah di level internasional. Prestasi 2: <b>Mendirikan PT IPTN dan merancang N-250 Gatotkaca</b> — pesawat turboprop pertama yang 100% dirancang dan diproduksi tenaga ahli Indonesia. Penting karena menunjukkan Indonesia mampu mandiri dalam teknologi tinggi dan tidak hanya bergantung pada impor. Kedua prestasi ini menjadi simbol bahwa investasi pada pendidikan dan teknologi adalah kunci kemajuan bangsa.
+    </div>
+  </div>
+</div>
+
+<!-- SOAL 29 -->
+<div class="soal" id="s29">
+  <div class="soal-q"><div class="soal-num">29</div>
+    <div class="soal-txt">Jelaskan bagaimana B.J. Habibie mewujudkan <b>konsep nasionalisme</b> melalui tindakan nyata dalam hidupnya! Apakah bentuk nasionalisme seperti itu masih relevan bagi generasi muda Indonesia saat ini? Jelaskan!</div>
+  </div>
+  <div class="uraian">
+    <textarea id="u29" placeholder="Identifikasi tindakan nyata Habibie, jelaskan maknanya sebagai nasionalisme, lalu berikan argumen relevansinya bagi generasi muda…"></textarea>
+    <div class="hint">💡 Panduan: Identifikasi tindakan + makna nasionalisme + argumen relevansi saat ini. (±6–10 kalimat)</div>
+    <div class="uraian-kunci" id="kunci29">
+      <strong>✅ Kunci/Pedoman Jawaban:</strong>
+      Habibie mewujudkan nasionalisme bukan melalui pidato, melainkan melalui <b>pengorbanan nyata</b>: meninggalkan karier gemilang di Eropa untuk membangun industri strategis di Indonesia. Mendirikan IPTN dan memimpin pengembangan N-250 adalah bukti keyakinannya bahwa teknologi adalah kunci kedaulatan bangsa. Ini adalah <b>nasionalisme aktif berbasis kompetensi</b>. Relevansi bagi generasi muda: di era globalisasi, tidak harus menolak peluang luar negeri, tetapi penting memiliki niat menggunakan ilmu untuk kemajuan Indonesia — seperti membangun startup lokal, mengembangkan teknologi untuk rakyat, atau mengabdi di daerah terpencil. Nasionalisme sejati bukan sekadar rasa bangga, melainkan aksi nyata.
+    </div>
+  </div>
+</div>
+
+<!-- SOAL 30 -->
+<div class="soal" id="s30">
+  <div class="soal-q"><div class="soal-num">30</div>
+    <div class="soal-txt"><b>Susunlah teks negosiasi kreatif</b> dalam bentuk dialog berdasarkan ilustrasi berikut!</div>
+  </div>
+  <div class="ilustrasi">
+    <b>Ilustrasi:</b> Seorang siswa bernama <em>Rafi</em> ingin meminta izin kepada ibunya (<em>Ibu Dewi</em>) untuk mengikuti program pertukaran pelajar ke Jepang selama satu semester. Ibu Dewi khawatir soal biaya, keselamatan, dan nilai akademik Rafi. Rafi harus meyakinkan ibunya dengan argumen kuat dan solusi atas setiap kekhawatiran sang ibu.
+  </div>
+  <div class="uraian">
+    <textarea id="u30" style="min-height:160px" placeholder="Tuliskan dialog Rafi dan Ibu Dewi di sini.&#10;Pastikan mencakup: Orientasi → Pengajuan → Penawaran → Persetujuan&#10;Minimal 8 giliran bicara, gunakan kalimat persuasif, dan akhiri dengan win-win solution…"></textarea>
+    <div class="hint">💡 Panduan: Min. 8 giliran bicara (4 tiap pihak), kalimat persuasif + argumen logis, akhiri dengan kesepakatan saling menguntungkan. Perhatikan EYD dan struktur negosiasi.</div>
+    <div class="uraian-kunci" id="kunci30">
+      <strong>✅ Kunci/Pedoman Jawaban (Contoh Dialog):</strong><br>
+      <b>Rafi:</b> "Bu, Rafi ingin menyampaikan sesuatu yang penting. Boleh Rafi bicara sebentar?" <em>(Orientasi)</em><br>
+      <b>Ibu Dewi:</b> "Tentu, ada apa, Nak?"<br>
+      <b>Rafi:</b> "Rafi mendapat kesempatan program pertukaran pelajar ke Jepang satu semester — gratis, Bu, karena beasiswa penuh dari Kemendikbud." <em>(Pengajuan + Argumen biaya)</em><br>
+      <b>Ibu Dewi:</b> "Ibu senang, tapi khawatir soal keselamatanmu di sana."<br>
+      <b>Rafi:</b> "Program ini resmi diawasi pemerintah. Rafi tinggal bersama keluarga angkat yang sudah diseleksi ketat. Rafi berjanji menghubungi Ibu setiap hari." <em>(Penawaran/Solusi keselamatan)</em><br>
+      <b>Ibu Dewi:</b> "Bagaimana dengan nilai akademikmu?"<br>
+      <b>Rafi:</b> "Sekolah di Jepang mengirim laporan akademik tiap bulan. Jika nilai Rafi turun, Rafi bersedia pulang lebih awal." <em>(Penawaran/Solusi akademik)</em><br>
+      <b>Ibu Dewi:</b> "Baiklah, Ibu izinkan — asal rajin ibadah, jaga kesehatan, dan hubungi Ibu setiap hari." <em>(Persetujuan/Win-win)</em><br>
+      <b>Rafi:</b> "Terima kasih, Bu! Rafi janji membawa pulang ilmu dan pengalaman terbaik untuk keluarga dan bangsa."
+    </div>
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-wrap">
+  <button class="submit-btn" id="submit-btn" onclick="submitUjian()">
+    📋 Kumpulkan Jawaban &amp; Lihat Skor
+  </button>
+</div>
+
+<div class="review-badge" id="review-badge">
+  ✅ Mode Tinjauan — Jawaban benar ditampilkan dengan warna hijau; jawaban salah merah
+</div>
+
+<!-- MODAL SKOR -->
+<div class="modal-overlay hidden" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2>📊 Hasil Ujian</h2>
+      <p id="modal-nama">PSAT Bahasa Indonesia – X-10</p>
+    </div>
+    <div class="skor-circle">
+      <div class="skor-angka" id="modal-skor">0</div>
+      <div class="skor-max">dari 100</div>
+    </div>
+    <div class="skor-grade" id="modal-grade">—</div>
+    <div class="skor-predikat" id="modal-predikat"></div>
+    <div class="skor-rincian">
+      <div class="rincian-row"><span>PG Biasa (No. 1–22 &amp; 25) — @ 3 poin</span><span id="r-pg">0 / 23</span></div>
+      <div class="rincian-row"><span>PG Kompleks (No. 23–24) — @ 4 poin</span><span id="r-pgk">0 / 2</span></div>
+      <div class="rincian-row"><span>Uraian (No. 26–30) — estimasi dari kelengkapan</span><span id="r-ur">0 / 5 terisi</span></div>
+      <div class="rincian-row highlight"><span>Total Poin PG</span><span id="r-total">0 / 77</span></div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" onclick="tutupModal()">Tutup</button>
+      <button class="modal-btn primary" onclick="lihatPembahasan()">Lihat Pembahasan</button>
+    </div>
+  </div>
+</div>
+
+<div class="ftr">
+  <b>SMA Negeri 1 Kandat</b> &nbsp;·&nbsp; Kelas X-10 &nbsp;·&nbsp; PSAT Bahasa Indonesia 2025/2026<br>
+  <em>— Kerjakan dengan jujur, cermat, dan penuh semangat —</em>
+</div>
+
+<script>
+// ════════════════════════════════
+// KUNCI JAWABAN
+// ════════════════════════════════
+const KUNCI_PG = {
+  s1:'B', s2:'B', s3:'C', s4:'C', s5:'D',
+  s6:'C', s7:'B',
+  s8:'B', s9:'C', s10:'D', s11:'B', s12:'B',
+  s13:'B', s14:'C', s15:'B', s16:'C', s17:'C',
+  s18:'D', s19:'C', s20:'B',
+  s21:'B', s22:'C', s25:'C'
+};
+
+const KUNCI_PGK = {
+  s23: [0, 2, 3],    // pernyataan 1, 3, 4 benar
+  s24: [0, 1, 2, 4]  // pernyataan 1, 2, 3, 5 benar
+};
+
+let submitted = false;
+
+function pilih(el, soalId, huruf){
+  if(submitted) return;
+  const ul = el.parentElement;
+  ul.querySelectorAll('li').forEach(li => li.classList.remove('dipilih'));
+  el.classList.add('dipilih');
+  document.getElementById(soalId).classList.add('answered');
+  updateProg();
+}
+
+function toggleBacaan(btn){
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('show');
+}
+
+function updateProg(){
+  let terjawab = 0;
+  const pgSoal = ['s1','s2','s3','s4','s5','s6','s7',
+                  's8','s9','s10','s11','s12',
+                  's13','s14','s15','s16','s17','s18','s19','s20',
+                  's21','s22','s25'];
+  pgSoal.forEach(id => {
+    const soal = document.getElementById(id);
+    if(soal && soal.querySelector('.dipilih')) terjawab++;
+  });
+  ['s23','s24'].forEach(id => {
+    const s = document.getElementById(id);
+    if(s && s.querySelector('input:checked')) terjawab++;
+  });
+  const total = 24;
+  const pct = Math.round(terjawab/total*100);
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-txt').textContent = terjawab+' / '+total+' soal';
+}
+
+function submitUjian(){
+  if(submitted) return;
+  submitted = true;
+  document.getElementById('submit-btn').disabled = true;
+  document.getElementById('submit-btn').textContent = '✅ Jawaban Dikumpulkan';
+
+  let skorPG = 0, benarPG = 0;
+  const pgSoal = ['s1','s2','s3','s4','s5','s6','s7',
+                  's8','s9','s10','s11','s12',
+                  's13','s14','s15','s16','s17','s18','s19','s20',
+                  's21','s22','s25'];
+  const hurufList = ['A','B','C','D','E'];
+
+  pgSoal.forEach(id => {
+    const soal = document.getElementById(id);
+    const kunci = KUNCI_PG[id];
+    const items = soal.querySelectorAll('.pilihan li');
+
+    items.forEach((li, idx) => {
+      const h = hurufList[idx];
+      if(h === kunci) li.classList.add('kunci-benar');
+      if(li.classList.contains('dipilih')){
+        if(h === kunci){
+          li.classList.remove('dipilih');
+          li.classList.add('benar');
+          skorPG += 3; benarPG++;
+        } else {
+          li.classList.remove('dipilih');
+          li.classList.add('salah-dipilih');
+        }
+      }
+      li.style.pointerEvents = 'none';
+    });
+  });
+
+  // PG Kompleks
+  let benarPGK = 0, skorPGK = 0;
+  ['s23','s24'].forEach(id => {
+    const soal = document.getElementById(id);
+    const kunciArr = KUNCI_PGK[id];
+    const labels = soal.querySelectorAll('.pgk label');
+    const userChecked = [];
+    labels.forEach((lbl, i) => {
+      if(lbl.querySelector('input').checked) userChecked.push(i);
+    });
+    const semuaBenar = kunciArr.every(i => userChecked.includes(i));
+    const tidakAdaSalah = userChecked.every(i => kunciArr.includes(i));
+
+    labels.forEach((lbl, i) => {
+      const cb = lbl.querySelector('input');
+      cb.disabled = true;
+      if(kunciArr.includes(i) && cb.checked){
+        lbl.classList.add('pgk-benar');
+      } else if(!kunciArr.includes(i) && cb.checked){
+        lbl.classList.add('pgk-salah');
+      } else if(kunciArr.includes(i) && !cb.checked){
+        lbl.style.background = '#f0faf4';
+        lbl.style.color = 'var(--green)';
+        lbl.style.fontStyle = 'italic';
+      }
+    });
+
+    if(semuaBenar && tidakAdaSalah){
+      skorPGK += 4; benarPGK++;
+      const note = document.createElement('div');
+      note.className = 'pgk-note';
+      note.textContent = '✅ Lengkap dan benar! (+4 poin)';
+      soal.querySelector('.pgk').appendChild(note);
+    } else if(semuaBenar || tidakAdaSalah){
+      skorPGK += 2;
+      const note = document.createElement('div');
+      note.className = 'pgk-note salah';
+      note.textContent = '⚠️ Sebagian benar (+2 poin). Perhatikan pilihan hijau untuk jawaban lengkap.';
+      soal.querySelector('.pgk').appendChild(note);
+    } else {
+      const note = document.createElement('div');
+      note.className = 'pgk-note salah';
+      note.textContent = '❌ Kurang tepat (0 poin). Perhatikan pilihan hijau untuk jawaban yang benar.';
+      soal.querySelector('.pgk').appendChild(note);
+    }
+  });
+
+  // Uraian
+  let terisiUr = 0;
+  ['u26','u27','u28','u29','u30'].forEach(id => {
+    const ta = document.getElementById(id);
+    if(ta && ta.value.trim().length > 20) terisiUr++;
+    ta.disabled = true;
+  });
+
+  // Tampilkan kunci uraian
+  ['kunci26','kunci27','kunci28','kunci29','kunci30'].forEach(id => {
+    document.getElementById(id).style.display = 'block';
+  });
+
+  document.getElementById('review-badge').style.display = 'block';
+
+  // Skor
+  const totalSkorPG = skorPG + skorPGK;
+  const estimasiUraian = Math.round((terisiUr / 5) * 30);
+  const nilaiAkhir = Math.min(100, Math.round(((totalSkorPG / 77) * 70) + estimasiUraian));
+
+  let grade, predikat, gradeColor;
+  if(nilaiAkhir >= 90){ grade='A'; predikat='Sangat Baik – Luar Biasa!'; gradeColor='#1a7a3c'; }
+  else if(nilaiAkhir >= 80){ grade='B+'; predikat='Baik Sekali – Pertahankan!'; gradeColor='#2980b9'; }
+  else if(nilaiAkhir >= 70){ grade='B'; predikat='Baik – Terus Tingkatkan!'; gradeColor='#2980b9'; }
+  else if(nilaiAkhir >= 60){ grade='C+'; predikat='Cukup – Masih Bisa Lebih Baik!'; gradeColor='#d97706'; }
+  else if(nilaiAkhir >= 50){ grade='C'; predikat='Cukup – Perlu Belajar Lebih Giat'; gradeColor='#d97706'; }
+  else { grade='D'; predikat='Perlu Bimbingan Guru'; gradeColor='#c0392b'; }
+
+  const namaInput = document.getElementById('inp-nama').value.trim();
+  document.getElementById('modal-nama').textContent = namaInput ? namaInput+' — X-10' : 'PSAT Bahasa Indonesia – X-10';
+  document.getElementById('modal-skor').textContent = nilaiAkhir;
+  document.getElementById('modal-grade').textContent = grade;
+  document.getElementById('modal-grade').style.color = gradeColor;
+  document.getElementById('modal-predikat').textContent = predikat;
+  document.getElementById('r-pg').textContent = benarPG+' / 23 benar ('+skorPG+' poin)';
+  document.getElementById('r-pgk').textContent = benarPGK+' / 2 sempurna (+'+skorPGK+' poin)';
+  document.getElementById('r-ur').textContent = terisiUr+' / 5 soal terisi';
+  document.getElementById('r-total').textContent = totalSkorPG+' / 77 poin PG';
+  document.getElementById('modal-overlay').classList.remove('hidden');
+
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function tutupModal(){
+  document.getElementById('modal-overlay').classList.add('hidden');
+}
+
+function lihatPembahasan(){
+  document.getElementById('modal-overlay').classList.add('hidden');
+  document.getElementById('s1').scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>
