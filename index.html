@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocab Mastery Pro - SRS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --surface-color: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #38bdf8;
+            --border: #334155;
+            --easy: #10b981;
+            --medium: #3b82f6;
+            --hard: #ef4444;
+            
+            /* Font Size Variables */
+            --size-title: 2rem;
+            --size-word: 2rem;
+            --size-meaning: 1.4rem;
+            --size-body: 1rem;
+            --size-small: 0.85rem;
+        }
+
+        /* Variasi Ukuran Font */
+        body.font-small {
+            --size-title: 1.5rem;
+            --size-word: 1.5rem;
+            --size-meaning: 1.1rem;
+            --size-body: 0.85rem;
+            --size-small: 0.75rem;
+        }
+        body.font-large {
+            --size-title: 2.5rem;
+            --size-word: 2.5rem;
+            --size-meaning: 1.8rem;
+            --size-body: 1.15rem;
+            --size-small: 0.95rem;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 2rem 1rem; font-size: var(--size-body); }
+        .container { width: 100%; max-width: 600px; }
+        
+        /* Top Utility Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .top-bar h1 { font-size: var(--size-title); font-weight: 700; }
+        
+        .font-selector {
+            display: flex;
+            background: var(--surface-color);
+            padding: 0.25rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            gap: 0.25rem;
+        }
+        .font-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.35rem 0.65rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+        .font-btn.active {
+            background: var(--bg-color);
+            color: var(--primary);
+        }
+
+        /* Tabs, List, Form Styles */
+        .tabs { display: flex; background: var(--surface-color); padding: 0.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid var(--border); }
+        .tab-btn { flex: 1; border: none; color: var(--text-muted); padding: 0.75rem; font-weight: 600; cursor: pointer; border-radius: 8px; background: transparent; transition: 0.2s; font-size: var(--size-body); }
+        .tab-btn.active { background: var(--bg-color); color: var(--primary); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        /* Form inputs */
+        .input-field { width:100%; padding:1rem; margin-bottom:1rem; background:var(--surface-color); border:1px solid var(--border); color:white; border-radius:10px; font-size: var(--size-body); }
+        .input-field:focus { outline: none; border-color: var(--primary); }
+
+        /* Quiz Styles */
+        .quiz-card { background: var(--surface-color); border: 1px solid var(--border); padding: 2.5rem 2rem; border-radius: 16px; text-align: center; margin-bottom: 1.5rem; }
+        .quiz-word { font-size: var(--size-word); font-weight: 700; color: var(--primary); margin-bottom: 0.25rem; }
+        .quiz-pronounce { color: var(--text-muted); font-style: italic; margin-bottom: 2rem; font-size: var(--size-body); }
+        .quiz-meaning { font-size: var(--size-meaning); font-weight: 600; margin-bottom: 2rem; display: none; color: #10b981; }
+        
+        /* List Styles */
+        .vocab-card { background: var(--surface-color); border: 1px solid var(--border); padding: 1.25rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .list-word { font-size: calc(var(--size-body) * 1.2); font-weight: 700; color: var(--primary); }
+        .list-pronounce { color: var(--text-muted); font-style: italic; font-size: var(--size-small); }
+        .list-meaning { font-size: var(--size-body); margin-top: 0.25rem; }
+
+        .rating-group { display: none; gap: 0.5rem; }
+        .btn-rate { flex: 1; border: none; padding: 1rem; border-radius: 10px; color: white; font-weight: 600; cursor: pointer; transition: transform 0.1s; font-size: var(--size-body); }
+        .btn-rate:active { transform: scale(0.95); }
+        .btn-easy { background: var(--easy); }
+        .btn-medium { background: var(--medium); }
+        .btn-hard { background: var(--hard); }
+        
+        #btnReveal { width: 100%; background: var(--primary); border: none; padding: 1rem; border-radius: 10px; font-weight: 700; color: var(--bg-color); cursor: pointer; font-size: var(--size-body); }
+        .btn-submit { width:100%; padding:1rem; border-radius:10px; border:none; background:var(--primary); font-weight:700; font-size: var(--size-body); cursor: pointer; }
+        .delete-btn { background: transparent; border: none; color: #ef4444; cursor: pointer; font-weight: 600; font-size: var(--size-small); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <h1>VocabMaster</h1>
+            <div class="font-selector">
+                <button class="font-btn" id="f-small" onclick="changeFontSize('small')">Kecil</button>
+                <button class="font-btn active" id="f-normal" onclick="changeFontSize('normal')">Sedang</button>
+                <button class="font-btn" id="f-large" onclick="changeFontSize('large')">Besar</button>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('list')">List</button>
+            <button class="tab-btn" onclick="switchTab('add')">Tambah</button>
+            <button class="tab-btn" onclick="switchTab('quiz')">Tes (SRS)</button>
+        </div>
+
+        <main id="list" class="tab-content active"><div id="vocabListContainer"></div></main>
+        
+        <main id="add" class="tab-content">
+            <form id="addForm" onsubmit="addVocab(event)">
+                <input type="text" id="word" placeholder="Kata (Inggris)" required class="input-field" autocomplete="off">
+                <input type="text" id="pronunciation" placeholder="Cara Baca (contoh: bru)" required class="input-field" autocomplete="off">
+                <input type="text" id="meaning" placeholder="Arti" required class="input-field" autocomplete="off">
+                <button type="submit" class="btn-submit">Simpan Vocab</button>
+            </form>
+        </main>
+
+        <main id="quiz" class="tab-content">
+            <div class="quiz-card">
+                <div class="quiz-word" id="qWord">--</div>
+                <div class="quiz-pronounce" id="qPronounce">(--)</div>
+                <div class="quiz-meaning" id="qMeaning">--</div>
+                
+                <button id="btnReveal" onclick="revealAnswer()">Buka Arti</button>
+                
+                <div class="rating-group" id="ratingGroup">
+                    <button class="btn-rate btn-easy" onclick="rateWord(1)">Gampang</button>
+                    <button class="btn-rate btn-medium" onclick="rateWord(2)">Sedang</button>
+                    <button class="btn-rate btn-hard" onclick="rateWord(3)">Susah</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let vocabs = JSON.parse(localStorage.getItem('myVocabs')) || [
+            {id:1, word:"wake up", pronunciation:"weik-up", meaning:"bangun tidur", difficulty:2},
+            {id:2, word:"brew", pronunciation:"bru", meaning:"menyeduh", difficulty:2}
+        ];
+        let currentVocab = null;
+
+        // Fungsi Mengubah Ukuran Font
+        function changeFontSize(size) {
+            document.body.classList.remove('font-small', 'font-large');
+            document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+            
+            if (size === 'small') {
+                document.body.classList.add('font-small');
+                document.getElementById('f-small').classList.add('active');
+            } else if (size === 'large') {
+                document.body.classList.add('font-large');
+                document.getElementById('f-large').classList.add('active');
+            } else {
+                document.getElementById('f-normal').classList.add('active');
+            }
+            localStorage.setItem('vocabFontSize', size);
+        }
+
+        function switchTab(id) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.currentTarget.classList.add('active');
+            if(id==='quiz') nextQuiz();
+            if(id==='list') renderList();
+        }
+
+        function renderList() {
+            const container = document.getElementById('vocabListContainer');
+            container.innerHTML = '';
+            if (vocabs.length === 0) {
+                container.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:2rem 0;">Belum ada vocab.</div>`;
+                return;
+            }
+            [...vocabs].reverse().forEach(v => {
+                const card = document.createElement('div');
+                card.className = 'vocab-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="list-word">${v.word} <span class="list-pronounce">(${v.pronunciation})</span></div>
+                        <div class="list-meaning">${v.meaning}</div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteVocab(${v.id})">Hapus</button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function nextQuiz() {
+            if(vocabs.length === 0) {
+                document.getElementById('qWord').innerText = "Kosong";
+                document.getElementById('qPronounce').innerText = "";
+                return;
+            }
+            
+            let pool = [];
+            vocabs.forEach(v => {
+                let weight = v.difficulty || 2; 
+                for(let i=0; i<weight; i++) pool.push(v);
+            });
+            
+            currentVocab = pool[Math.floor(Math.random() * pool.length)];
+            
+            document.getElementById('qWord').innerText = currentVocab.word;
+            document.getElementById('qPronounce').innerText = `(${currentVocab.pronunciation})`;
+            document.getElementById('qMeaning').style.display = 'none';
+            document.getElementById('btnReveal').style.display = 'block';
+            document.getElementById('ratingGroup').style.display = 'none';
+        }
+
+        function revealAnswer() {
+            document.getElementById('qMeaning').innerText = currentVocab.meaning;
+            document.getElementById('qMeaning').style.display = 'block';
+            document.getElementById('btnReveal').style.display = 'none';
+            document.getElementById('ratingGroup').style.display = 'flex';
+        }
+
+        function rateWord(diff) {
+            let idx = vocabs.findIndex(v => v.id === currentVocab.id);
+            if(idx !== -1) {
+                vocabs[idx].difficulty = diff;
+                localStorage.setItem('myVocabs', JSON.stringify(vocabs));
+            }
+            nextQuiz();
+        }
+
+        function addVocab(e) {
+            e.preventDefault();
+            vocabs.push({
+                id: Date.now(),
+                word: document.getElementById('word').value.trim(),
+                pronunciation: document.getElementById('pronunciation').value.trim(),
+                meaning: document.getElementById('meaning').value.trim(),
+                difficulty: 2
+            });
+            localStorage.setItem('myVocabs', JSON.stringify(vocabs));
+            e.target.reset();
+            switchTab('list');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.remove('active');
+        }
+
+        function deleteVocab(id) {
+            if(confirm('Hapus kata ini?')) {
+                vocabs = vocabs.filter(v => v.id !== id);
+                localStorage.setItem('myVocabs', JSON.stringify(vocabs));
+                renderList();
+            }
+        }
+
+        // Inisialisasi Ukuran Font & List Saat Pertama Buka
+        const savedFontSize = localStorage.getItem('vocabFontSize') || 'normal';
+        changeFontSize(savedFontSize);
+        renderList();
+    </script>
+</body>
+</html>
