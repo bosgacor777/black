@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verb Master - Bug Free Edition</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --surface-color: #1e1e1e;
+            --primary-color: #bb86fc;
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --border-color: #333333;
+            --success: #03dac6;
+            --error: #cf6679;
+            --warning: #f39c12;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 0 10px;
+        }
+
+        button {
+            background-color: var(--surface-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button.active, button:hover {
+            background-color: var(--primary-color);
+            color: #000;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Study Mode Styles */
+        .pattern-group {
+            background-color: var(--surface-color);
+            margin-bottom: 20px;
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .pattern-title {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th { color: var(--text-secondary); }
+
+        .ipa-text {
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            display: block;
+            margin-top: 2px;
+            font-family: monospace;
+        }
+        
+        .audio-btn {
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-left: 5px;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .audio-btn:active {
+            transform: scale(0.8);
+        }
+
+        /* Quiz & Flashcard Mode Styles */
+        .quiz-card {
+            background-color: var(--surface-color);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .verb-question {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .verb-ipa-main {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+            font-family: monospace;
+        }
+
+        .verb-meaning {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .correct { color: var(--success); }
+        .wrong { color: var(--error); }
+
+        /* Anki Buttons */
+        .anki-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .anki-btn-group button {
+            flex: 1;
+            padding: 15px 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .anki-btn-group button small {
+            font-weight: normal;
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (min-width: 600px) {
+            .input-group {
+                flex-direction: row;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Verb Master</h1>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">Master V1 V2 V3 with Audio, Patterns & Anki SRS</p>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab(event, 'study')">📚 Study</button>
+        <button class="tab-btn" onclick="switchTab(event, 'quiz')">🎯 Typing Quiz</button>
+        <button class="tab-btn" onclick="switchTab(event, 'flashcard')">🃏 Anki Flashcard</button>
+        <button class="tab-btn" onclick="switchTab(event, 'add')">➕ Add Word</button>
+    </div>
+
+    <div class="container">
+        <!-- STUDY TAB -->
+        <div id="study" class="section active">
+            <div id="study-container"></div>
+        </div>
+
+        <!-- TYPING QUIZ TAB -->
+        <div id="quiz" class="section">
+            <div class="quiz-card">
+                <p style="color: var(--text-secondary)">What is the V2 and V3 of this word?</p>
+                <div class="verb-question">
+                    <span id="q-v1">loading...</span> 
+                    <span class="audio-btn" id="q-audio-btn">🔊</span>
+                </div>
+                <div class="verb-ipa-main" id="q-ipa">/loading/</div>
+                <div class="verb-meaning" id="q-arti">loading...</div>
+                
+                <div class="input-group">
+                    <input type="text" id="ans-v2" placeholder="Type Verb 2..." autocomplete="off">
+                    <input type="text" id="ans-v3" placeholder="Type Verb 3..." autocomplete="off">
+                </div>
+                
+                <button onclick="checkAnswer()" style="width: 100%; background-color: var(--primary-color); color: #000;">Check Answer</button>
+                <button onclick="nextQuestion()" style="width: 100%; margin-top: 10px;">Skip / Next Word</button>
+                
+                <div id="quiz-feedback" class="feedback"></div>
+                <p id="quiz-counter" style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 10px;"></p>
+            </div>
+        </div>
+
+        <!-- FLASHCARD TAB (ANKI MODE) -->
+        <div id="flashcard" class="section">
+            <div class="quiz-card">
+                <p style="color: var(--text-secondary)">Guess the V2 and V3 in your head, then reveal!</p>
+                <div class="verb-question">
+                    <span id="fc-v1">loading...</span>
+                    <span class="audio-btn" id="fc-audio-v1">🔊</span>
+                </div>
+                <div class="verb-ipa-main" id="fc-ipa">/loading/</div>
+                <div class="verb-meaning" id="fc-arti">loading...</div>
+                
+                <!-- Answer Box -->
+                <div id="fc-answer-box" style="display: none; margin-bottom: 20px; padding: 15px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-color);">
+                    <div style="font-size: 1.5rem; color: var(--success); font-weight: bold; display: flex; justify-content: center; align-items: center; gap: 5px;">
+                        <span id="fc-v2"></span> <span class="audio-btn" id="fc-audio-v2">🔊</span> - 
+                        <span id="fc-v3"></span> <span class="audio-btn" id="fc-audio-v3">🔊</span>
+                    </div>
+                    <div style="font-size: 1rem; color: var(--primary-color); font-family: monospace; margin-top: 5px;">
+                        <span id="fc-ipa2"></span> - <span id="fc-ipa3"></span>
+                    </div>
+                </div>
+                
+                <button id="fc-btn-show" onclick="showFlashcard()" style="width: 100%; background-color: var(--primary-color); color: #000;">Reveal Answer</button>
+                
+                <!-- Anki Buttons -->
+                <div id="fc-anki-btns" class="anki-btn-group" style="display: none;">
+                    <button onclick="answerFlashcard('again')" style="background-color: var(--error); color: white;">🔴 Again <small>(1 min)</small></button>
+                    <button onclick="answerFlashcard('good')" style="background-color: var(--warning); color: white;">🟡 Good <small>(10 min)</small></button>
+                    <button onclick="answerFlashcard('easy')" style="background-color: var(--success); color: #000;">🟢 Easy <small>(1 day)</small></button>
+                </div>
+                <p id="fc-stats" style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 15px;"></p>
+            </div>
+        </div>
+
+        <!-- ADD WORD TAB -->
+        <div id="add" class="section">
+            <div class="quiz-card">
+                <h2 style="margin-bottom: 20px; color: var(--primary-color);">Add New Vocabulary</h2>
+                
+                <div class="form-group">
+                    <label>Verb 1 (Infinitive)</label>
+                    <input type="text" id="new-v1" placeholder="Example: jump">
+                </div>
+                <div class="form-group">
+                    <label>Verb 2 & 3</label>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <input type="text" id="new-v2" placeholder="Verb 2...">
+                        <input type="text" id="new-v3" placeholder="Verb 3...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Meaning & Pattern Group</label>
+                    <div class="input-group" style="margin-bottom: 0;">
+                        <input type="text" id="new-arti" placeholder="Example: melompat">
+                        <input type="text" id="new-pola" placeholder="Example: Regular Verbs">
+                    </div>
+                </div>
+                
+                <button onclick="addWord()" style="width: 100%; background-color: var(--primary-color); color: #000;">Save Word</button>
+                <div id="add-feedback" class="feedback" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // AUDIO FUNCTION
+        function playAudio(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                let utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US'; 
+                utterance.rate = 0.9; 
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Sorry, your browser doesn't support text-to-speech audio.");
+            }
+        }
+
+        // DEFAULT DATA
+        const defaultVerbs = [
+            {v1: "begin", ipaV1: "/bɪˈɡɪn/", v2: "began", ipaV2: "/bɪˈɡæn/", v3: "begun", ipaV3: "/bɪˈɡʌn/", arti: "memulai", pola: "1. Pola i-a-u (Vokal Tengah)"},
+            {v1: "drink", ipaV1: "/drɪŋk/", v2: "drank", ipaV2: "/dræŋk/", v3: "drunk", ipaV3: "/drʌŋk/", arti: "meminum", pola: "1. Pola i-a-u (Vokal Tengah)"},
+            {v1: "ring", ipaV1: "/rɪŋ/", v2: "rang", ipaV2: "/ræŋ/", v3: "rung", ipaV3: "/rʌŋ/", arti: "berbunyi", pola: "1. Pola i-a-u (Vokal Tengah)"},
+            {v1: "sing", ipaV1: "/sɪŋ/", v2: "sang", ipaV2: "/sæŋ/", v3: "sung", ipaV3: "/sʌŋ/", arti: "bernyanyi", pola: "1. Pola i-a-u (Vokal Tengah)"},
+            {v1: "swim", ipaV1: "/swɪm/", v2: "swam", ipaV2: "/swæm/", v3: "swum", ipaV3: "/swʌm/", arti: "berenang", pola: "1. Pola i-a-u (Vokal Tengah)"},
+            {v1: "cost", ipaV1: "/kɑːst/", v2: "cost", ipaV2: "/kɑːst/", v3: "cost", ipaV3: "/kɑːst/", arti: "berharga", pola: "2. Kembar Tiga (Sama Persis)"},
+            {v1: "cut", ipaV1: "/kʌt/", v2: "cut", ipaV2: "/kʌt/", v3: "cut", ipaV3: "/kʌt/", arti: "memotong", pola: "2. Kembar Tiga (Sama Persis)"},
+            {v1: "hit", ipaV1: "/hɪt/", v2: "hit", ipaV2: "/hɪt/", v3: "hit", ipaV3: "/hɪt/", arti: "memukul", pola: "2. Kembar Tiga (Sama Persis)"},
+            {v1: "hurt", ipaV1: "/hɝːt/", v2: "hurt", ipaV2: "/hɝːt/", v3: "hurt", ipaV3: "/hɝːt/", arti: "melukai/terluka", pola: "2. Kembar Tiga (Sama Persis)"},
+            {v1: "let", ipaV1: "/let/", v2: "let", ipaV2: "/let/", v3: "let", ipaV3: "/let/", arti: "membiarkan", pola: "2. Kembar Tiga (Sama Persis)"},
+            {v1: "put", ipaV1: "/pʊt/", v2: "put", ipaV2: "/pʊt/", v3: "put", ipaV3: "/pʊt/", arti: "meletakkan", pola: "2. Kembar Tiga (Sama Persis)"},
+            {v1: "read", ipaV1: "/riːd/", v2: "read", ipaV2: "/red/", v3: "read", ipaV3: "/red/", arti: "membaca", pola: "2. Kembar Tiga (Sama Persis)"},
+            {v1: "shut", ipaV1: "/ʃʌt/", v2: "shut", ipaV2: "/ʃʌt/", v3: "shut", ipaV3: "/ʃʌt/", arti: "menutup", pola: "2. Kembar Tiga (Sama Persis)"},
+            {v1: "become", ipaV1: "/bɪˈkʌm/", v2: "became", ipaV2: "/bɪˈkeɪm/", v3: "become", ipaV3: "/bɪˈkʌm/", arti: "menjadi", pola: "3. Pola Sandwich (V1 dan V3 Sama)"},
+            {v1: "come", ipaV1: "/kʌm/", v2: "came", ipaV2: "/keɪm/", v3: "come", ipaV3: "/kʌm/", arti: "datang", pola: "3. Pola Sandwich (V1 dan V3 Sama)"},
+            {v1: "run", ipaV1: "/rʌn/", v2: "ran", ipaV2: "/ræn/", v3: "run", ipaV3: "/rʌn/", arti: "lari", pola: "3. Pola Sandwich (V1 dan V3 Sama)"},
+            {v1: "blow", ipaV1: "/bloʊ/", v2: "blew", ipaV2: "/bluː/", v3: "blown", ipaV3: "/bloʊn/", arti: "meniup", pola: "4. Pola ew - own/awn"},
+            {v1: "draw", ipaV1: "/drɑː/", v2: "drew", ipaV2: "/druː/", v3: "drawn", ipaV3: "/drɑːn/", arti: "menggambar", pola: "4. Pola ew - own/awn"},
+            {v1: "fly", ipaV1: "/flaɪ/", v2: "flew", ipaV2: "/fluː/", v3: "flown", ipaV3: "/floʊn/", arti: "terbang", pola: "4. Pola ew - own/awn"},
+            {v1: "grow", ipaV1: "/ɡroʊ/", v2: "grew", ipaV2: "/ɡruː/", v3: "grown", ipaV3: "/ɡroʊn/", arti: "tumbuh", pola: "4. Pola ew - own/awn"},
+            {v1: "know", ipaV1: "/noʊ/", v2: "knew", ipaV2: "/nuː/", v3: "known", ipaV3: "/noʊn/", arti: "mengetahui", pola: "4. Pola ew - own/awn"},
+            {v1: "throw", ipaV1: "/θroʊ/", v2: "threw", ipaV2: "/θruː/", v3: "thrown", ipaV3: "/θroʊn/", arti: "membuang", pola: "4. Pola ew - own/awn"},
+            {v1: "bring", ipaV1: "/brɪŋ/", v2: "brought", ipaV2: "/brɔːt/", v3: "brought", ipaV3: "/brɔːt/", arti: "membawa", pola: "5. Pola Akhiran -ought / -aught"},
+            {v1: "buy", ipaV1: "/baɪ/", v2: "bought", ipaV2: "/bɑːt/", v3: "bought", ipaV3: "/bɑːt/", arti: "membeli", pola: "5. Pola Akhiran -ought / -aught"},
+            {v1: "catch", ipaV1: "/kætʃ/", v2: "caught", ipaV2: "/kɑːt/", v3: "caught", ipaV3: "/kɑːt/", arti: "menangkap", pola: "5. Pola Akhiran -ought / -aught"},
+            {v1: "fight", ipaV1: "/faɪt/", v2: "fought", ipaV2: "/fɑːt/", v3: "fought", ipaV3: "/fɑːt/", arti: "berkelahi/berjuang", pola: "5. Pola Akhiran -ought / -aught"},
+            {v1: "teach", ipaV1: "/tiːtʃ/", v2: "taught", ipaV2: "/tɑːt/", v3: "taught", ipaV3: "/tɑːt/", arti: "mengajar", pola: "5. Pola Akhiran -ought / -aught"},
+            {v1: "think", ipaV1: "/θɪŋk/", v2: "thought", ipaV2: "/θɑːt/", v3: "thought", ipaV3: "/θɑːt/", arti: "berpikir", pola: "5. Pola Akhiran -ought / -aught"},
+            {v1: "build", ipaV1: "/bɪld/", v2: "built", ipaV2: "/bɪlt/", v3: "built", ipaV3: "/bɪlt/", arti: "membangun", pola: "6. Pola Akhiran -d berubah -t"},
+            {v1: "lend", ipaV1: "/lend/", v2: "lent", ipaV2: "/lent/", v3: "lent", ipaV3: "/lent/", arti: "meminjami", pola: "6. Pola Akhiran -d berubah -t"},
+            {v1: "send", ipaV1: "/send/", v2: "sent", ipaV2: "/sent/", v3: "sent", ipaV3: "/sent/", arti: "mengirim", pola: "6. Pola Akhiran -d berubah -t"},
+            {v1: "spend", ipaV1: "/spend/", v2: "spent", ipaV2: "/spent/", v3: "spent", ipaV3: "/spent/", arti: "menghabiskan", pola: "6. Pola Akhiran -d berubah -t"},
+            {v1: "feel", ipaV1: "/fiːl/", v2: "felt", ipaV2: "/felt/", v3: "felt", ipaV3: "/felt/", arti: "merasa", pola: "7. V2 & V3 Sama (Berakhiran huruf T)"},
+            {v1: "keep", ipaV1: "/kiːp/", v2: "kept", ipaV2: "/kept/", v3: "kept", ipaV3: "/kept/", arti: "menjaga", pola: "7. V2 & V3 Sama (Berakhiran huruf T)"},
+            {v1: "leave", ipaV1: "/liːv/", v2: "left", ipaV2: "/left/", v3: "left", ipaV3: "/left/", arti: "meninggalkan", pola: "7. V2 & V3 Sama (Berakhiran huruf T)"},
+            {v1: "mean", ipaV1: "/miːn/", v2: "meant", ipaV2: "/ment/", v3: "meant", ipaV3: "/ment/", arti: "maksud", pola: "7. V2 & V3 Sama (Berakhiran huruf T)"},
+            {v1: "sleep", ipaV1: "/sliːp/", v2: "slept", ipaV2: "/slept/", v3: "slept", ipaV3: "/slept/", arti: "tidur", pola: "7. V2 & V3 Sama (Berakhiran huruf T)"},
+            {v1: "break", ipaV1: "/breɪk/", v2: "broke", ipaV2: "/broʊk/", v3: "broken", ipaV3: "/ˈbroʊ.kən/", arti: "mematahkan", pola: "8. Pola o - o - en/n"},
+            {v1: "choose", ipaV1: "/tʃuːz/", v2: "chose", ipaV2: "/tʃoʊz/", v3: "chosen", ipaV3: "/ˈtʃoʊ.zən/", arti: "memilih", pola: "8. Pola o - o - en/n"},
+            {v1: "forget", ipaV1: "/fɚˈɡet/", v2: "forgot", ipaV2: "/fɚˈɡɑːt/", v3: "forgotten", ipaV3: "/fɚˈɡɑː.tən/", arti: "melupakan", pola: "8. Pola o - o - en/n"},
+            {v1: "speak", ipaV1: "/spiːk/", v2: "spoke", ipaV2: "/spoʊk/", v3: "spoken", ipaV3: "/ˈspoʊ.kən/", arti: "berbicara", pola: "8. Pola o - o - en/n"},
+            {v1: "steal", ipaV1: "/stiːl/", v2: "stole", ipaV2: "/stoʊl/", v3: "stolen", ipaV3: "/ˈstoʊ.lən/", arti: "mencuri", pola: "8. Pola o - o - en/n"},
+            {v1: "tear", ipaV1: "/ter/", v2: "tore", ipaV2: "/tɔːr/", v3: "torn", ipaV3: "/tɔːrn/", arti: "menyobek", pola: "8. Pola o - o - en/n"},
+            {v1: "wake", ipaV1: "/weɪk/", v2: "woke", ipaV2: "/woʊk/", v3: "woken", ipaV3: "/ˈwoʊ.kən/", arti: "bangun", pola: "8. Pola o - o - en/n"},
+            {v1: "wear", ipaV1: "/wer/", v2: "wore", ipaV2: "/wɔːr/", v3: "worn", ipaV3: "/wɔːrn/", arti: "memakai", pola: "8. Pola o - o - en/n"},
+            {v1: "drive", ipaV1: "/draɪv/", v2: "drove", ipaV2: "/droʊv/", v3: "driven", ipaV3: "/ˈdrɪv.ən/", arti: "mengendarai (mobil)", pola: "9. Pola i - o - en"},
+            {v1: "ride", ipaV1: "/raɪd/", v2: "rode", ipaV2: "/roʊd/", v3: "ridden", ipaV3: "/ˈrɪd.ən/", arti: "mengendarai (sepeda)", pola: "9. Pola i - o - en"},
+            {v1: "rise", ipaV1: "/raɪz/", v2: "rose", ipaV2: "/roʊz/", v3: "risen", ipaV3: "/ˈrɪz.ən/", arti: "terbit", pola: "9. Pola i - o - en"},
+            {v1: "write", ipaV1: "/raɪt/", v2: "wrote", ipaV2: "/roʊt/", v3: "written", ipaV3: "/ˈrɪt.ən/", arti: "menulis", pola: "9. Pola i - o - en"},
+            {v1: "beat", ipaV1: "/biːt/", v2: "beat", ipaV2: "/biːt/", v3: "beaten", ipaV3: "/ˈbiː.t̬ən/", arti: "memukul", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "bite", ipaV1: "/baɪt/", v2: "bit", ipaV2: "/bɪt/", v3: "bitten", ipaV3: "/ˈbɪt.ən/", arti: "menggigit", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "eat", ipaV1: "/iːt/", v2: "ate", ipaV2: "/eɪt/", v3: "eaten", ipaV3: "/ˈiː.t̬ən/", arti: "makan", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "fall", ipaV1: "/fɑːl/", v2: "fell", ipaV2: "/fel/", v3: "fallen", ipaV3: "/ˈfɑː.lən/", arti: "jatuh", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "give", ipaV1: "/ɡɪv/", v2: "gave", ipaV2: "/ɡeɪv/", v3: "given", ipaV3: "/ˈɡɪv.ən/", arti: "memberi", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "hide", ipaV1: "/haɪd/", v2: "hid", ipaV2: "/hɪd/", v3: "hidden", ipaV3: "/ˈhɪd.ən/", arti: "bersembunyi", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "see", ipaV1: "/siː/", v2: "saw", ipaV2: "/sɑː/", v3: "seen", ipaV3: "/siːn/", arti: "melihat", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "show", ipaV1: "/ʃoʊ/", v2: "showed", ipaV2: "/ʃoʊd/", v3: "shown", ipaV3: "/ʃoʊn/", arti: "menunjukkan", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "take", ipaV1: "/teɪk/", v2: "took", ipaV2: "/tʊk/", v3: "taken", ipaV3: "/ˈteɪ.kən/", arti: "mengambil", pola: "10. Pola V3 berakhiran -en (Campuran)"},
+            {v1: "find", ipaV1: "/faɪnd/", v2: "found", ipaV2: "/faʊnd/", v3: "found", ipaV3: "/faʊnd/", arti: "menemukan", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "get", ipaV1: "/ɡet/", v2: "got", ipaV2: "/ɡɑːt/", v3: "got", ipaV3: "/ɡɑːt/", arti: "mendapat", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "hang", ipaV1: "/hæŋ/", v2: "hung", ipaV2: "/hʌŋ/", v3: "hung", ipaV3: "/hʌŋ/", arti: "menggantung", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "have", ipaV1: "/hæv/", v2: "had", ipaV2: "/hæd/", v3: "had", ipaV3: "/hæd/", arti: "memiliki", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "hear", ipaV1: "/hɪr/", v2: "heard", ipaV2: "/hɪrd/", v3: "heard", ipaV3: "/hɪrd/", arti: "mendengar", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "hold", ipaV1: "/hoʊld/", v2: "held", ipaV2: "/held/", v3: "held", ipaV3: "/held/", arti: "menahan", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "light", ipaV1: "/laɪt/", v2: "lit", ipaV2: "/lɪt/", v3: "lit", ipaV3: "/lɪt/", arti: "menyalakan", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "lose", ipaV1: "/luːz/", v2: "lost", ipaV2: "/lɑːst/", v3: "lost", ipaV3: "/lɑːst/", arti: "kehilangan", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "make", ipaV1: "/meɪk/", v2: "made", ipaV2: "/meɪd/", v3: "made", ipaV3: "/meɪd/", arti: "membuat", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "meet", ipaV1: "/miːt/", v2: "met", ipaV2: "/met/", v3: "met", ipaV3: "/met/", arti: "bertemu", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "pay", ipaV1: "/peɪ/", v2: "paid", ipaV2: "/peɪd/", v3: "paid", ipaV3: "/peɪd/", arti: "membayar", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "say", ipaV1: "/seɪ/", v2: "said", ipaV2: "/sed/", v3: "said", ipaV3: "/sed/", arti: "berkata", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "sell", ipaV1: "/sel/", v2: "sold", ipaV2: "/soʊld/", v3: "sold", ipaV3: "/soʊld/", arti: "menjual", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "shine", ipaV1: "/ʃaɪn/", v2: "shone", ipaV2: "/ʃoʊn/", v3: "shone", ipaV3: "/ʃoʊn/", arti: "bersinar", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "shoot", ipaV1: "/ʃuːt/", v2: "shot", ipaV2: "/ʃɑːt/", v3: "shot", ipaV3: "/ʃɑːt/", arti: "menembak", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "sit", ipaV1: "/sɪt/", v2: "sat", ipaV2: "/sæt/", v3: "sat", ipaV3: "/sæt/", arti: "duduk", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "stand", ipaV1: "/stænd/", v2: "stood", ipaV2: "/stʊd/", v3: "stood", ipaV3: "/stʊd/", arti: "berdiri", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "tell", ipaV1: "/tel/", v2: "told", ipaV2: "/toʊld/", v3: "told", ipaV3: "/toʊld/", arti: "menceritakan", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "understand", ipaV1: "/ˌʌn.dɚˈstænd/", v2: "understood", ipaV2: "/ˌʌn.dɚˈstʊd/", v3: "understood", ipaV3: "/ˌʌn.dɚˈstʊd/", arti: "memahami", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "win", ipaV1: "/wɪn/", v2: "won", ipaV2: "/wʌn/", v3: "won", ipaV3: "/wʌn/", arti: "menang", pola: "11. V2 dan V3 Sama (Kelompok Campuran)"},
+            {v1: "be", ipaV1: "/biː/", v2: "was/were", ipaV2: "/wɑːz/", v3: "been", ipaV3: "/biːn/", arti: "ada / adalah", pola: "12. Pola Unik / Berubah Total"},
+            {v1: "do", ipaV1: "/duː/", v2: "did", ipaV2: "/dɪd/", v3: "done", ipaV3: "/dʌn/", arti: "melakukan", pola: "12. Pola Unik / Berubah Total"},
+            {v1: "go", ipaV1: "/ɡoʊ/", v2: "went", ipaV2: "/went/", v3: "gone", ipaV3: "/ɡɑːn/", arti: "pergi", pola: "12. Pola Unik / Berubah Total"},
+            {v1: "lie", ipaV1: "/laɪ/", v2: "lay", ipaV2: "/leɪ/", v3: "lain", ipaV3: "/leɪn/", arti: "berbaring", pola: "12. Pola Unik / Berubah Total"}
+        ];
+
+        // MENGGUNAKAN KEY BARU (V5) UNTUK MENGHINDARI BENTROKAN DATA LAMA
+        const STORAGE_KEY = 'verbMasterV5';
+        let verbsData = [];
+        
+        try {
+            let savedStr = localStorage.getItem(STORAGE_KEY);
+            if (savedStr) {
+                verbsData = JSON.parse(savedStr);
+            }
+        } catch (error) {
+            console.error("Local Storage Error:", error);
+        }
+        
+        if (!verbsData || verbsData.length === 0) {
+            // Melakukan kloning agar tidak memodifikasi data default secara langsung
+            verbsData = JSON.parse(JSON.stringify(defaultVerbs)); 
+        }
+        
+        // Memastikan properti nextReview ada
+        verbsData.forEach(v => {
+            if (typeof v.nextReview === 'undefined') {
+                v.nextReview = 0; 
+            }
+        });
+        saveData();
+
+        // MENGGUNAKAN event.currentTarget AGAR TOMBOL BERFUNGSI NORMAL DI HP
+        function switchTab(e, tabId) {
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            if (e && e.currentTarget) {
+                e.currentTarget.classList.add('active');
+            }
+            
+            if(tabId === 'study') renderStudyData();
+            if(tabId === 'quiz') nextQuestion();
+            if(tabId === 'flashcard') nextFlashcard(); 
+        }
+
+        // --- STUDY ---
+        function renderStudyData() {
+            const container = document.getElementById('study-container');
+            container.innerHTML = '';
+
+            const groupedData = verbsData.reduce((acc, verb) => {
+                if (!acc[verb.pola]) acc[verb.pola] = [];
+                acc[verb.pola].push(verb);
+                return acc;
+            }, {});
+
+            for (const pola in groupedData) {
+                let tableHTML = `
+                    <div class="pattern-group">
+                        <div class="pattern-title">${pola}</div>
+                        <table>
+                            <tr>
+                                <th>V1</th><th>V2</th><th>V3</th><th>Meaning</th>
+                            </tr>`;
+                
+                groupedData[pola].forEach(v => {
+                    let renderIpa1 = v.ipaV1 ? `<span class="ipa-text">${v.ipaV1}</span>` : '';
+                    let renderIpa2 = v.ipaV2 ? `<span class="ipa-text">${v.ipaV2}</span>` : '';
+                    let renderIpa3 = v.ipaV3 ? `<span class="ipa-text">${v.ipaV3}</span>` : '';
+
+                    tableHTML += `
+                        <tr>
+                            <td><strong>${v.v1}</strong> <span class="audio-btn" onclick="playAudio('${v.v1}')">🔊</span>${renderIpa1}</td>
+                            <td>${v.v2} <span class="audio-btn" onclick="playAudio('${v.v2}')">🔊</span>${renderIpa2}</td>
+                            <td>${v.v3} <span class="audio-btn" onclick="playAudio('${v.v3}')">🔊</span>${renderIpa3}</td>
+                            <td>${v.arti}</td>
+                        </tr>`;
+                });
+
+                tableHTML += `</table></div>`;
+                container.innerHTML += tableHTML;
+            }
+        }
+
+        // --- TYPING QUIZ (BAG SHUFFLE) ---
+        let currentQuizWord = null;
+        let isWaiting = false;
+        let quizBag = [];
+
+        function nextQuestion() {
+            isWaiting = false;
+            
+            if (quizBag.length === 0) {
+                quizBag = verbsData.map((_, i) => i).sort(() => Math.random() - 0.5);
+            }
+            
+            let nextIndex = quizBag.pop();
+            currentQuizWord = verbsData[nextIndex];
+            
+            document.getElementById('q-v1').innerText = currentQuizWord.v1;
+            document.getElementById('q-audio-btn').setAttribute('onclick', `playAudio('${currentQuizWord.v1}')`);
+            document.getElementById('q-ipa').innerText = currentQuizWord.ipaV1 ? currentQuizWord.ipaV1 : "";
+            document.getElementById('q-arti').innerText = `(${currentQuizWord.arti})`;
+            document.getElementById('quiz-counter').innerText = `Words left in deck: ${quizBag.length}`;
+            
+            document.getElementById('ans-v2').value = '';
+            document.getElementById('ans-v3').value = '';
+            document.getElementById('quiz-feedback').innerText = '';
+            document.getElementById('ans-v2').focus();
+        }
+
+        function checkAnswer() {
+            if (isWaiting) return;
+
+            let ansV2 = document.getElementById('ans-v2').value.trim().toLowerCase();
+            let ansV3 = document.getElementById('ans-v3').value.trim().toLowerCase();
+            const feedback = document.getElementById('quiz-feedback');
+
+            let isV2Correct = (ansV2 === currentQuizWord.v2);
+            if (currentQuizWord.v2 === "was/were" && (ansV2 === "was" || ansV2 === "were" || ansV2 === "was/were")) {
+                isV2Correct = true;
+            }
+
+            let ipa2 = currentQuizWord.ipaV2 ? `<br><span style="font-size: 0.9rem; font-family: monospace;">${currentQuizWord.ipaV2} - ${currentQuizWord.ipaV3}</span>` : '';
+
+            if (isV2Correct && ansV3 === currentQuizWord.v3) {
+                feedback.innerHTML = `<span class="correct">Spot On! 🎉<br> ${currentQuizWord.v1} - ${currentQuizWord.v2} - ${currentQuizWord.v3} ${ipa2}</span>`;
+                isWaiting = true;
+                setTimeout(nextQuestion, 2200);
+            } else {
+                feedback.innerHTML = `<span class="wrong">Not quite! 😅<br>Correct: <strong>${currentQuizWord.v2}</strong> - <strong>${currentQuizWord.v3}</strong> ${ipa2}</span>`;
+                isWaiting = true;
+                setTimeout(nextQuestion, 3500); 
+            }
+        }
+
+        // --- FLASHCARD (ANKI SRS) ---
+        let currentFcWord = null; 
+
+        function nextFlashcard() {
+            let now = Date.now();
+            
+            let dueCards = verbsData.filter(v => v.nextReview <= now);
+            
+            document.getElementById('fc-stats').innerText = `Cards to review now: ${dueCards.length} / ${verbsData.length}`;
+
+            if (dueCards.length === 0) {
+                dueCards = [verbsData.reduce((prev, curr) => prev.nextReview < curr.nextReview ? prev : curr)];
+                document.getElementById('fc-stats').innerHTML = `<span class="correct">All caught up! Next card in queue...</span>`;
+            }
+
+            const randomIndex = Math.floor(Math.random() * dueCards.length);
+            currentFcWord = dueCards[randomIndex];
+            
+            document.getElementById('fc-v1').innerText = currentFcWord.v1;
+            document.getElementById('fc-audio-v1').setAttribute('onclick', `playAudio('${currentFcWord.v1}')`);
+            
+            document.getElementById('fc-ipa').innerText = currentFcWord.ipaV1 ? currentFcWord.ipaV1 : "";
+            document.getElementById('fc-arti').innerText = `(${currentFcWord.arti})`;
+            
+            document.getElementById('fc-answer-box').style.display = 'none';
+            document.getElementById('fc-btn-show').style.display = 'block';
+            document.getElementById('fc-anki-btns').style.display = 'none';
+        }
+
+        function showFlashcard() {
+            document.getElementById('fc-v2').innerText = currentFcWord.v2;
+            document.getElementById('fc-audio-v2').setAttribute('onclick', `playAudio('${currentFcWord.v2}')`);
+            
+            document.getElementById('fc-v3').innerText = currentFcWord.v3;
+            document.getElementById('fc-audio-v3').setAttribute('onclick', `playAudio('${currentFcWord.v3}')`);
+            
+            document.getElementById('fc-ipa2').innerText = currentFcWord.ipaV2 ? currentFcWord.ipaV2 : "";
+            document.getElementById('fc-ipa3').innerText = currentFcWord.ipaV3 ? currentFcWord.ipaV3 : "";
+            
+            document.getElementById('fc-answer-box').style.display = 'block';
+            document.getElementById('fc-btn-show').style.display = 'none';
+            document.getElementById('fc-anki-btns').style.display = 'flex';
+        }
+
+        function answerFlashcard(quality) {
+            let now = Date.now();
+            
+            if (quality === 'again') {
+                currentFcWord.nextReview = now + (60 * 1000); 
+            } else if (quality === 'good') {
+                currentFcWord.nextReview = now + (10 * 60 * 1000); 
+            } else if (quality === 'easy') {
+                currentFcWord.nextReview = now + (24 * 60 * 60 * 1000); 
+            }
+            
+            saveData();
+            nextFlashcard();
+        }
+
+        // --- ADD WORD ---
+        function addWord() {
+            const v1 = document.getElementById('new-v1').value.trim().toLowerCase();
+            const v2 = document.getElementById('new-v2').value.trim().toLowerCase();
+            const v3 = document.getElementById('new-v3').value.trim().toLowerCase();
+            const arti = document.getElementById('new-arti').value.trim();
+            const pola = document.getElementById('new-pola').value.trim();
+            const feedback = document.getElementById('add-feedback');
+
+            if(!v1 || !v2 || !v3 || !arti || !pola) {
+                feedback.innerHTML = `<span class="wrong">Please fill in all the fields!</span>`;
+                return;
+            }
+
+            verbsData.push({v1, v2, v3, arti, pola, ipaV1: "", ipaV2: "", ipaV3: "", nextReview: 0});
+            saveData();
+
+            feedback.innerHTML = `<span class="correct">Word successfully added! ✅</span>`;
+            
+            document.getElementById('new-v1').value = '';
+            document.getElementById('new-v2').value = '';
+            document.getElementById('new-v3').value = '';
+            document.getElementById('new-arti').value = '';
+            document.getElementById('new-pola').value = '';
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(verbsData));
+            } catch (error) {
+                console.error("Gagal menyimpan data:", error);
+            }
+        }
+
+        renderStudyData();
+    </script>
+</body>
+</html>
