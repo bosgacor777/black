@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNBT 2026 Fake Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: rgba(0,0,0,0.3);
+      padding: 30px;
+      border-radius: 15px;
+    }
+    input, select, button {
+      padding: 12px;
+      margin: 10px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+    button {
+      background: #ff4757;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover { background: #ff3742; }
+    #result {
+      margin-top: 20px;
+      padding: 20px;
+      background: white;
+      color: #333;
+      border-radius: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 SNBT 2026 Fake Generator</h1>
+    <p>Buat pengumuman prank (For Fun Only!)</p>
+
+    <input type="text" id="nama" placeholder="Nama Lengkap" required><br>
+    <input type="text" id="nomor" placeholder="Nomor Peserta (contoh: 123456789)" required><br>
+    <select id="status">
+      <option value="lulus">Lulus ✅</option>
+      <option value="gagal">Tidak Lulus ❌</option>
+    </select><br>
+    <input type="text" id="ptn" placeholder="Nama PTN (contoh: UI)" value="Universitas Indonesia"><br>
+    <input type="text" id="prodi" placeholder="Program Studi" value="Teknik Informatika"><br>
+
+    <button onclick="generate()">Generate Pengumuman</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function generate() {
+      const nama = document.getElementById('nama').value || "Nama Siswa";
+      const nomor = document.getElementById('nomor').value || "000000000";
+      const status = document.getElementById('status').value;
+      const ptn = document.getElementById('ptn').value;
+      const prodi = document.getElementById('prodi').value;
+
+      const resultDiv = document.getElementById('result');
+      
+      if (status === "lulus") {
+        resultDiv.innerHTML = `
+          <h2>SELAMAT!</h2>
+          <h3>Anda dinyatakan <span style="color:green">LULUS</span> Seleksi SNBT 2026</h3>
+          <p><strong>Nomor Peserta:</strong> ${nomor}</p>
+          <p><strong>Nama:</strong> ${nama}</p>
+          <p><strong>PTN:</strong> ${ptn}</p>
+          <p><strong>Program Studi:</strong> ${prodi}</p>
+          <p style="color:green; font-size:18px;">🎉 Selamat bergabung di kampus impian!</p>
+        `;
+      } else {
+        resultDiv.innerHTML = `
+          <h2>Mohon Maaf</h2>
+          <h3>Anda dinyatakan <span style="color:red">TIDAK LULUS</span> Seleksi SNBT 2026</h3>
+          <p><strong>Nomor Peserta:</strong> ${nomor}</p>
+          <p><strong>Nama:</strong> ${nama}</p>
+          <p>Jangan putus asa! Masih ada banyak kesempatan.</p>
+        `;
+      }
+      
+      resultDiv.style.display = "block";
+    }
+  </script>
+</body>
+      </html>
