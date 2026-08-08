@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎲 Pengacak Kosakata</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            margin: 0;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 5px solid #3498db;
+        }
+        .word {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .meaning {
+            font-size: 1.3em;
+            color: #e67e22;
+            margin-bottom: 5px;
+        }
+        .type {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 25px;
+            min-height: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .add-form {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .add-form h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        .add-form input {
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+        .add-form input:focus {
+            border-color: #3498db;
+        }
+        .btn-add {
+            background-color: #2ecc71;
+        }
+        .btn-add:hover {
+            background-color: #27ae60;
+        }
+        .counter {
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: -10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🎲 Pengacak Kosakata</h1>
+        
+        <div class="card">
+            <div class="word" id="wordDisplay">Klik Tombol</div>
+            <div class="meaning" id="meaningDisplay">untuk mulai mengacak kata</div>
+            <div class="type" id="typeDisplay"></div>
+            <button onclick="acakKata()">🔄 Acak Kosakata Selanjutnya</button>
+        </div>
+        
+        <div class="counter" id="vocabCount"></div>
+
+        <div class="add-form">
+            <h3>➕ Tambah Kosakata Baru</h3>
+            <input type="text" id="newWord" placeholder="Kosakata (contoh: impact)">
+            <input type="text" id="newMeaning" placeholder="Arti (contoh: dampak)">
+            <input type="text" id="newType" placeholder="Tipe (contoh: noun) - Opsional">
+            <button class="btn-add" onclick="tambahKata()">Simpan Kosakata</button>
+        </div>
+    </div>
+
+    <script>
+        // Data bawaan berdasarkan list yang Anda berikan
+        const defaultVocab = [
+            { word: "concern", meaning: "mengkhawatirkan", type: "verb" }, //[span_0](start_span)[span_0](end_span)
+            { word: "behalf", meaning: "atas nama", type: "" }, //[span_1](start_span)[span_1](end_span)
+            { word: "patiance", meaning: "kesabaran", type: "noun" }, //[span_2](start_span)[span_2](end_span)
+            { word: "acquire", meaning: "mendapatkan", type: "verb" }, //[span_3](start_span)[span_3](end_span)
+            { word: "require", meaning: "memerlukan", type: "verb" }, //[span_4](start_span)[span_4](end_span)
+            { word: "encourage", meaning: "menyemangati, mendorong, menganjurkan", type: "verb" }, //[span_5](start_span)[span_5](end_span)
+            { word: "convince", meaning: "meyakinkan", type: "noun" }, //[span_6](start_span)[span_6](end_span)
+            { word: "amount", meaning: "jumlah", type: "noun" }, //[span_7](start_span)[span_7](end_span)
+            { word: "aid", meaning: "bantuan, membanty", type: "noun/verb" }, //[span_8](start_span)[span_8](end_span)
+            { word: "advance", meaning: "memajukan, bergerak maju", type: "verb" }, //[span_9](start_span)[span_9](end_span)
+            { word: "affair", meaning: "urusan, peristiwa, skandal", type: "" }, //[span_10](start_span)[span_10](end_span)
+            { word: "caution", meaning: "peringatan, hati2, perhatian", type: "" }, //[span_11](start_span)[span_11](end_span)
+            { word: "alter", meaning: "mengubah", type: "verb" }, //[span_12](start_span)[span_12](end_span)
+            { word: "accompany", meaning: "menyertai, menemabi", type: "" }, //[span_13](start_span)[span_13](end_span)
+            { word: "immediately", meaning: "segera, langsung", type: "adv" }, //[span_14](start_span)[span_14](end_span)
+            { word: "accomplishment", meaning: "pencapaian, prestasi", type: "noun" }, //[span_15](start_span)[span_15](end_span)
+            { word: "terrifying", meaning: "menakutkan", type: "adjective/verb" }, //[span_16](start_span)[span_16](end_span)
+            { word: "realizing", meaning: "menyadari", type: "" }, //[span_17](start_span)[span_17](end_span)
+            { word: "widely", meaning: "secara luas", type: "adverb" }, //[span_18](start_span)[span_18](end_span)
+            { word: "within", meaning: "dalam", type: "" }, //[span_19](start_span)[span_19](end_span)
+            { word: "degrees", meaning: "derajat, gelar, tingkat", type: "adjective, adverb" }, //[span_20](start_span)[span_20](end_span)
+            { word: "discouraging", meaning: "mengecewakan", type: "" }, //[span_21](start_span)[span_21](end_span)
+            { word: "nearly", meaning: "hampir", type: "" }, //[span_22](start_span)[span_22](end_span)
+            { word: "inevitable", meaning: "pasti terjadi, tidak bisa dihindari", type: "adjective" }, //[span_23](start_span)[span_23](end_span)
+            { word: "wages", meaning: "upah", type: "" }, //[span_24](start_span)[span_24](end_span)
+            { word: "nor", meaning: "juga bukan", type: "" }, //[span_25](start_span)[span_25](end_span)
+            { word: "figured out", meaning: "menemukan jawabannya", type: "" }, //[span_26](start_span)[span_26](end_span)
+            { word: "nevertheless", meaning: "namun demikian, meskipun", type: "" }, //[span_27](start_span)[span_27](end_span)
+            { word: "furthermore", meaning: "lebih lebih lagi", type: "" }, //[span_28](start_span)[span_28](end_span)
+            { word: "Evidence", meaning: "bukti", type: "" }, //[span_29](start_span)[span_29](end_span)
+            { word: "constantly", meaning: "selalu", type: "" }, //[span_30](start_span)[span_30](end_span)
+            { word: "determined", meaning: "bertekad", type: "" }, //[span_31](start_span)[span_31](end_span)
+            { word: "recognize", meaning: "mengenali", type: "" }, //[span_32](start_span)[span_32](end_span)
+            { word: "any", meaning: "apa pun / sembarang", type: "" } //[span_33](start_span)[span_33](end_span)
+        ];
+
+        // Memuat kosakata dari Local Storage atau menggunakan data default jika belum ada
+        let vocabList = JSON.parse(localStorage.getItem('myVocabList'));
+        if (!vocabList || vocabList.length === 0) {
+            vocabList = [...defaultVocab];
+            updateLocalStorage();
+        }
+
+        function updateCountDisplay() {
+            document.getElementById('vocabCount').innerText = `Total perbendaharaan: ${vocabList.length} kata`;
+        }
+
+        function updateLocalStorage() {
+            localStorage.setItem('myVocabList', JSON.stringify(vocabList));
+            updateCountDisplay();
+        }
+
+        // Fungsi mengacak array dan menampilkannya
+        function acakKata() {
+            if (vocabList.length === 0) return;
+            
+            // Pilih kata acak dari array
+            const randomIndex = Math.floor(Math.random() * vocabList.length);
+            const vocab = vocabList[randomIndex];
+
+            // Tampilkan di UI
+            document.getElementById('wordDisplay').innerText = vocab.word;
+            document.getElementById('meaningDisplay').innerText = vocab.meaning;
+            
+            // Format tipe kata jika tersedia
+            const typeText = vocab.type && vocab.type.trim() !== "" ? `(${vocab.type})` : '';
+            document.getElementById('typeDisplay').innerText = typeText;
+        }
+
+        // Fungsi menambah kosakata baru
+        function tambahKata() {
+            const wordInput = document.getElementById('newWord');
+            const meaningInput = document.getElementById('newMeaning');
+            const typeInput = document.getElementById('newType');
+
+            const word = wordInput.value.trim();
+            const meaning = meaningInput.value.trim();
+            const type = typeInput.value.trim();
+
+            if (word === "" || meaning === "") {
+                alert("Kosakata dan artinya wajib diisi!");
+                return;
+            }
+
+            // Tambahkan ke array dan perbarui Local Storage
+            vocabList.push({ word, meaning, type });
+            updateLocalStorage();
+
+            // Reset input form
+            wordInput.value = '';
+            meaningInput.value = '';
+            typeInput.value = '';
+
+            alert(`Sukses! "${word}" berhasil ditambahkan ke daftar kosakatamu.`);
+        }
+
+        // Jalankan saat halaman dimuat
+        updateCountDisplay();
+    </script>
+</body>
+</html>
