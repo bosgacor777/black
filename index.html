@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎲 Kuis Kosakata</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            margin: 0;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            border-top: 5px solid #3498db;
+        }
+        .meaning {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        .type {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 20px;
+            min-height: 20px;
+        }
+        .answer-input {
+            width: 90%;
+            padding: 15px;
+            font-size: 1.2em;
+            text-align: center;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            outline: none;
+            display: none; /* Disembunyikan sebelum mulai */
+        }
+        .answer-input:focus {
+            border-color: #3498db;
+        }
+        .feedback {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            min-height: 25px;
+            font-weight: bold;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .add-form {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .add-form h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        .add-form input {
+            padding: 12px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1em;
+            outline: none;
+        }
+        .add-form input:focus {
+            border-color: #3498db;
+        }
+        .btn-add {
+            background-color: #2ecc71;
+        }
+        .btn-add:hover {
+            background-color: #27ae60;
+        }
+        .counter {
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            margin-top: -10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📝 Kuis Kosakata</h1>
+        
+        <div class="card">
+            <div class="meaning" id="promptDisplay">Siap untuk mulai?</div>
+            <div class="type" id="typeDisplay">Tekan tombol di bawah</div>
+            
+            <input type="text" id="answerInput" class="answer-input" placeholder="Ketik bahasa Inggrisnya..." autocomplete="off">
+            
+            <div class="feedback" id="feedbackMessage"></div>
+            
+            <button id="actionBtn" onclick="tanganiTombol()">Mulai Kuis</button>
+        </div>
+        
+        <div class="counter" id="vocabCount"></div>
+
+        <div class="add-form">
+            <h3>➕ Tambah Kosakata Baru</h3>
+            <input type="text" id="newWord" placeholder="Kosakata (contoh: impact)">
+            <input type="text" id="newMeaning" placeholder="Arti (contoh: dampak)">
+            <input type="text" id="newType" placeholder="Tipe (contoh: noun) - Opsional">
+            <button class="btn-add" onclick="tambahKata()">Simpan Kosakata</button>
+        </div>
+    </div>
+
+    <script>
+        // Data bawaan
+        const defaultVocab = [
+            { word: "concern", meaning: "mengkhawatirkan", type: "verb" },
+            { word: "behalf", meaning: "atas nama", type: "" },
+            { word: "patiance", meaning: "kesabaran", type: "noun" },
+            { word: "acquire", meaning: "mendapatkan", type: "verb" },
+            { word: "require", meaning: "memerlukan", type: "verb" },
+            { word: "encourage", meaning: "menyemangati, mendorong, menganjurkan", type: "verb" },
+            { word: "convince", meaning: "meyakinkan", type: "noun" },
+            { word: "amount", meaning: "jumlah", type: "noun" },
+            { word: "aid", meaning: "bantuan, membanty", type: "noun/verb" },
+            { word: "advance", meaning: "memajukan, bergerak maju", type: "verb" },
+            { word: "affair", meaning: "urusan, peristiwa, skandal", type: "" },
+            { word: "caution", meaning: "peringatan, hati2, perhatian", type: "" },
+            { word: "alter", meaning: "mengubah", type: "verb" },
+            { word: "accompany", meaning: "menyertai, menemabi", type: "" },
+            { word: "immediately", meaning: "segera, langsung", type: "adv" },
+            { word: "accomplishment", meaning: "pencapaian, prestasi", type: "noun" },
+            { word: "terrifying", meaning: "menakutkan", type: "adjective/verb" },
+            { word: "realizing", meaning: "menyadari", type: "" },
+            { word: "widely", meaning: "secara luas", type: "adverb" },
+            { word: "within", meaning: "dalam", type: "" },
+            { word: "degrees", meaning: "derajat, gelar, tingkat", type: "adjective, adverb" },
+            { word: "discouraging", meaning: "mengecewakan", type: "" },
+            { word: "nearly", meaning: "hampir", type: "" },
+            { word: "inevitable", meaning: "pasti terjadi, tidak bisa dihindari", type: "adjective" },
+            { word: "wages", meaning: "upah", type: "" },
+            { word: "nor", meaning: "juga bukan", type: "" },
+            { word: "figured out", meaning: "menemukan jawabannya", type: "" },
+            { word: "nevertheless", meaning: "namun demikian, meskipun", type: "" },
+            { word: "furthermore", meaning: "lebih lebih lagi", type: "" },
+            { word: "Evidence", meaning: "bukti", type: "" },
+            { word: "constantly", meaning: "selalu", type: "" },
+            { word: "determined", meaning: "bertekad", type: "" },
+            { word: "recognize", meaning: "mengenali", type: "" },
+            { word: "any", meaning: "apa pun / sembarang", type: "" }
+        ];
+
+        let vocabList = JSON.parse(localStorage.getItem('myVocabList'));
+        if (!vocabList || vocabList.length === 0) {
+            vocabList = [...defaultVocab];
+            updateLocalStorage();
+        }
+
+        let currentVocab = null;
+        let isWaiting = false; // Mencegah tombol diklik ganda saat jeda pindah soal
+
+        function updateCountDisplay() {
+            document.getElementById('vocabCount').innerText = `Total perbendaharaan: ${vocabList.length} kata`;
+        }
+
+        function updateLocalStorage() {
+            localStorage.setItem('myVocabList', JSON.stringify(vocabList));
+            updateCountDisplay();
+        }
+
+        // Jalankan kuis atau cek jawaban tergantung status
+        function tanganiTombol() {
+            if (isWaiting) return;
+
+            if (!currentVocab) {
+                acakKata();
+            } else {
+                cekJawaban();
+            }
+        }
+
+        function acakKata() {
+            if (vocabList.length === 0) return;
+            
+            const randomIndex = Math.floor(Math.random() * vocabList.length);
+            currentVocab = vocabList[randomIndex];
+
+            document.getElementById('promptDisplay').innerText = currentVocab.meaning;
+            
+            const typeText = currentVocab.type && currentVocab.type.trim() !== "" ? `(${currentVocab.type})` : '';
+            document.getElementById('typeDisplay').innerText = typeText;
+            
+            const inputField = document.getElementById('answerInput');
+            inputField.style.display = 'block';
+            inputField.value = '';
+            inputField.focus();
+
+            document.getElementById('feedbackMessage').innerHTML = '';
+            document.getElementById('actionBtn').innerText = 'Cek Jawaban';
+            document.getElementById('actionBtn').disabled = false;
+        }
+
+        function cekJawaban() {
+            const inputField = document.getElementById('answerInput');
+            const userAnswer = inputField.value.trim().toLowerCase();
+            const correctAnswer = currentVocab.word.trim().toLowerCase();
+            const feedback = document.getElementById('feedbackMessage');
+            const actionBtn = document.getElementById('actionBtn');
+
+            isWaiting = true;
+            actionBtn.disabled = true; // Matikan tombol sementara
+
+            if (userAnswer === correctAnswer) {
+                feedback.innerHTML = '<span style="color: #27ae60;">Benar! 🎉</span>';
+                // Lanjut ke soal berikutnya dalam 1 detik
+                setTimeout(() => {
+                    isWaiting = false;
+                    acakKata();
+                }, 1000);
+            } else {
+                feedback.innerHTML = `<span style="color: #e74c3c;">Salah!</span> Jawaban yang benar: <span style="color: #2980b9;">${currentVocab.word}</span>`;
+                // Lanjut ke soal berikutnya dalam 2.5 detik agar sempat membaca
+                setTimeout(() => {
+                    isWaiting = false;
+                    acakKata();
+                }, 2500);
+            }
+        }
+
+        // Dukungan tombol Enter untuk mengirim jawaban
+        document.getElementById('answerInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && currentVocab && !isWaiting) {
+                cekJawaban();
+            }
+        });
+
+        // Fitur tambah kosakata
+        function tambahKata() {
+            const wordInput = document.getElementById('newWord');
+            const meaningInput = document.getElementById('newMeaning');
+            const typeInput = document.getElementById('newType');
+
+            const word = wordInput.value.trim();
+            const meaning = meaningInput.value.trim();
+            const type = typeInput.value.trim();
+
+            if (word === "" || meaning === "") {
+                alert("Kosakata dan artinya wajib diisi!");
+                return;
+            }
+
+            vocabList.push({ word, meaning, type });
+            updateLocalStorage();
+
+            wordInput.value = '';
+            meaningInput.value = '';
+            typeInput.value = '';
+
+            alert(`Sukses! "${word}" berhasil ditambahkan ke daftar kosakatamu.`);
+        }
+
+        updateCountDisplay();
+    </script>
+</body>
+</html>
