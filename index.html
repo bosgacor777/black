@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tebak Part of Speech Vocab - Full Version</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-color: #f0fdf4;
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --success: #10b981;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            box-sizing: border-box;
+            margin: 1rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .score-board {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+            background-color: #e0e7ff;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .card {
+            background-color: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            padding: 2rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .word-en {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .word-id {
+            font-size: 1.2rem;
+            color: #4b5563;
+            font-style: italic;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-option {
+            background-color: #ffffff;
+            border: 2px solid #d1d5db;
+            color: var(--text-color);
+            padding: 0.8rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-option:hover:not(:disabled) {
+            border-color: var(--primary);
+            color: var(--primary);
+            background-color: #e0e7ff;
+            transform: translateY(-2px);
+        }
+
+        .btn-option:disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn-option.correct {
+            background-color: var(--success) !important;
+            border-color: var(--success) !important;
+            color: white !important;
+        }
+
+        .btn-option.wrong {
+            background-color: var(--error) !important;
+            border-color: var(--error) !important;
+            color: white !important;
+        }
+
+        #feedback {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            min-height: 1.5rem;
+        }
+
+        .btn-next {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+            display: none;
+        }
+
+        .btn-next:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .end-screen {
+            display: none;
+        }
+
+        .end-screen h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .end-screen p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #4b5563;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="quiz-screen">
+            <h1>Tebak Part of Speech Vocab</h1>
+            <div class="score-board">Soal <span id="current-q">1</span> dari <span id="total-q">15</span> | Skor: <span id="score">0</span></div>
+            
+            <div class="card">
+                <div class="word-en" id="word-en">Loading...</div>
+                <div class="word-id" id="word-id">Arti: ...</div>
+            </div>
+
+            <div class="options-grid" id="options-container">
+                <!-- Tombol pilihan akan dimuat lewat JavaScript -->
+            </div>
+
+            <div id="feedback"></div>
+            <button class="btn-next" id="btn-next" onclick="nextQuestion()">Pertanyaan Selanjutnya ➔</button>
+        </div>
+
+        <div class="end-screen" id="end-screen">
+            <h2>Kuis Selesai! 🎉</h2>
+            <p>Skor akhir kamu: <strong style="font-size: 1.5rem;"><span id="final-score">0</span> / <span id="max-score">15</span></strong></p>
+            <button class="btn-next" style="display: block; margin-top: 20px;" onclick="restartQuiz()">Main Lagi (Soal Diacak Baru)</button>
+        </div>
+    </div>
+
+    <script>
+        // Data SUPER LENGKAP tanpa ada yang korup/hilang dari tabel sebelumnya
+        const allVocabs = [
+            // NOUNS
+            { en: "China", id: "Cina", pos: "Noun" }, { en: "Artist", id: "Seniman / pelukis", pos: "Noun" }, { en: "Painting", id: "Lukisan", pos: "Noun" }, { en: "Day", id: "Hari", pos: "Noun" }, { en: "Emperor", id: "Kaisar", pos: "Noun" }, { en: "Portrait", id: "Potret / lukisan wajah", pos: "Noun" }, { en: "Work", id: "Karya / pekerjaan", pos: "Noun" }, { en: "Minister", id: "Menteri", pos: "Noun" }, { en: "River", id: "Sungai", pos: "Noun" }, { en: "World", id: "Dunia", pos: "Noun" }, { en: "People", id: "Orang-orang", pos: "Noun" }, { en: "Boat", id: "Perahu", pos: "Noun" }, { en: "Mountain", id: "Gunung", pos: "Noun" }, { en: "Water", id: "Air", pos: "Noun" }, { en: "Waterfall", id: "Air terjun", pos: "Noun" }, { en: "Shade", id: "Nuansa / gradasi warna", pos: "Noun" }, { en: "Mist", id: "Kabut", pos: "Noun" }, { en: "Cloud", id: "Awan", pos: "Noun" }, { en: "Peak", id: "Puncak", pos: "Noun" }, { en: "Moment", id: "Momen / saat", pos: "Noun" }, { en: "Mother Nature", id: "Ibu Pertiwi / Alam Semesta", pos: "Noun" }, { en: "Grapevine", id: "Tanaman anggur", pos: "Noun" }, { en: "Tree", id: "Pohon", pos: "Noun" }, { en: "Growth", id: "Pertumbuhan", pos: "Noun" }, { en: "Vine", id: "Tanaman merambat", pos: "Noun" }, { en: "Frame", id: "Kerangka kayu", pos: "Noun" }, { en: "Gardener", id: "Tukang kebun", pos: "Noun" }, { en: "Eye", id: "Mata", pos: "Noun" }, { en: "Support", id: "Penopang / penyangga", pos: "Noun" }, { en: "Base", id: "Dasar / pondasi", pos: "Noun" }, { en: "Advice", id: "Nasihat", pos: "Noun" }, { en: "Companion", id: "Teman / rekan", pos: "Noun" }, { en: "Garden", id: "Kebun / taman", pos: "Noun" }, { en: "Time", id: "Waktu", pos: "Noun" }, { en: "Wind", id: "Angin", pos: "Noun" }, { en: "Branch", id: "Dahan / cabang", pos: "Noun" }, { en: "Ground", id: "Tanah", pos: "Noun" }, { en: "Bat", id: "Kelelawar", pos: "Noun" }, { en: "Night", id: "Malam", pos: "Noun" }, { en: "Forest", id: "Hutan", pos: "Noun" }, { en: "Monkey", id: "Monyet", pos: "Noun" }, { en: "King", id: "Raja", pos: "Noun" }, { en: "Animal", id: "Hewan", pos: "Noun" }, { en: "Fruit", id: "Buah", pos: "Noun" }, { en: "Group", id: "Kelompok", pos: "Noun" }, { en: "Wing", id: "Sayap", pos: "Noun" }, { en: "Tooth / Teeth", id: "Gigi", pos: "Noun" }, { en: "Feast", id: "Pesta makan", pos: "Noun" }, { en: "Part", id: "Bagian", pos: "Noun" }, { en: "Food", id: "Makanan", pos: "Noun" }, { en: "Arrogance", id: "Kesombongan", pos: "Noun" }, { en: "Result", id: "Hasil / akibat", pos: "Noun" }, { en: "Story", id: "Cerita", pos: "Noun" }, { en: "Guardian", id: "Pelindung / penjaga", pos: "Noun" }, { en: "Man", id: "Pria", pos: "Noun" }, { en: "Family", id: "Keluarga", pos: "Noun" }, { en: "Firewood", id: "Kayu bakar", pos: "Noun" }, { en: "Money", id: "Uang", pos: "Noun" }, { en: "Village", id: "Desa", pos: "Noun" }, { en: "Need", id: "Kebutuhan", pos: "Noun" }, { en: "Axe", id: "Kapak", pos: "Noun" }, { en: "Dedication", id: "Pengabdian / dedikasi", pos: "Noun" }, { en: "Place", id: "Tempat", pos: "Noun" }, { en: "Bundle", id: "Ikatan / berkas", pos: "Noun" }, { en: "Way", id: "Jalan", pos: "Noun" }, { en: "Pole", id: "Kayu pemikul / tiang", pos: "Noun" }, { en: "Clump", id: "Rumpun", pos: "Noun" }, { en: "Bamboo", id: "Bambu", pos: "Noun" }, { en: "Hut", id: "Pondok", pos: "Noun" }, { en: "Step", id: "Langkah", pos: "Noun" }, { en: "Door", id: "Pintu", pos: "Noun" }, { en: "Surprise", id: "Kejutan", pos: "Noun" }, { en: "Kitchen", id: "Dapur", pos: "Noun" }, { en: "Stove", id: "Tungku / kompor", pos: "Noun" }, { en: "Grandma", id: "Nenek", pos: "Noun" }, { en: "Misfortune", id: "Kemalangan / musibah", pos: "Noun" }, { en: "Request", id: "Permintaan", pos: "Noun" }, { en: "Face", id: "Wajah", pos: "Noun" }, { en: "Voice", id: "Suara", pos: "Noun" }, { en: "Price", id: "Harga / ganjaran", pos: "Noun" }, { en: "Life", id: "Kehidupan", pos: "Noun" }, { en: "Hand", id: "Tangan", pos: "Noun" }, { en: "Lake", id: "Danau", pos: "Noun" }, { en: "Edge", id: "Tepi", pos: "Noun" }, { en: "Honesty", id: "Kejujuran", pos: "Noun" }, { en: "Cliff", id: "Tebing", pos: "Noun" }, { en: "Crowbar", id: "Linggis", pos: "Noun" }, { en: "Saw", id: "Gergaji", pos: "Noun" }, { en: "Hoe", id: "Cangkul", pos: "Noun" }, { en: "Tool", id: "Perkakas", pos: "Noun" }, { en: "Nature", id: "Alam", pos: "Noun" }, { en: "Duty", id: "Tugas / kewajiban", pos: "Noun" },
+            
+            // VERBS
+            { en: "Live", id: "Tinggal / hidup", pos: "Verb" }, { en: "Make", id: "Membuat", pos: "Verb" }, { en: "Become", id: "Menjadi", pos: "Verb" }, { en: "Want", id: "Menginginkan", pos: "Verb" }, { en: "Get", id: "Mendapatkan", pos: "Verb" }, { en: "Do", id: "Melakukan / selesai", pos: "Verb" }, { en: "Call", id: "Memanggil", pos: "Verb" }, { en: "Come", id: "Datang", pos: "Verb" }, { en: "Present", id: "Menyajikan", pos: "Verb" }, { en: "Choose", id: "Memilih", pos: "Verb" }, { en: "Be (Was/Were)", id: "Adalah (To be)", pos: "Verb" }, { en: "Show", id: "Menunjukkan", pos: "Verb" }, { en: "Laugh", id: "Tertawa", pos: "Verb" }, { en: "Tell", id: "Memberitahu / menyuruh", pos: "Verb" }, { en: "Go", id: "Pergi", pos: "Verb" }, { en: "Learn", id: "Belajar", pos: "Verb" }, { en: "Feel", id: "Merasa", pos: "Verb" }, { en: "Decide", id: "Memutuskan", pos: "Verb" }, { en: "Ask", id: "Meminta / bertanya", pos: "Verb" }, { en: "Find", id: "Menemukan", pos: "Verb" }, { en: "Smile", id: "Tersenyum", pos: "Verb" }, { en: "Point", id: "Menunjuk", pos: "Verb" }, { en: "Take", id: "Mengambil / menaiki", pos: "Verb" }, { en: "Travel", id: "Bepergian", pos: "Verb" }, { en: "See", id: "Melihat", pos: "Verb" }, { en: "Reflect", id: "Memantulkan", pos: "Verb" }, { en: "Rise", id: "Naik / membumbung", pos: "Verb" }, { en: "Merge", id: "Menyatu", pos: "Verb" }, { en: "Surround", id: "Mengelilingi", pos: "Verb" }, { en: "Begin", id: "Mulai", pos: "Verb" }, { en: "Cry", id: "Menangis", pos: "Verb" }, { en: "Understand", id: "Mengerti", pos: "Verb" }, { en: "Believe", id: "Percaya", pos: "Verb" }, { en: "Secure", id: "Mengamankan", pos: "Verb" }, { en: "Attach", id: "Menempelkan", pos: "Verb" }, { en: "Climb", id: "Memanjat", pos: "Verb" }, { en: "Continue", id: "Melanjutkan", pos: "Verb" }, { en: "Grow", id: "Tumbuh", pos: "Verb" }, { en: "Warn", id: "Memperingatkan", pos: "Verb" }, { en: "Open", id: "Membuka", pos: "Verb" }, { en: "Look", id: "Melihat", pos: "Verb" }, { en: "Question", id: "Mempertanyakan", pos: "Verb" }, { en: "Die", id: "Mati", pos: "Verb" }, { en: "Leave", id: "Meninggalkan", pos: "Verb" }, { en: "Remain", id: "Tetap", pos: "Verb" }, { en: "Ignore", id: "Mengabaikan", pos: "Verb" }, { en: "Circle", id: "Melingkari", pos: "Verb" }, { en: "Consider", id: "Menganggap", pos: "Verb" }, { en: "Pass", id: "Berlalu", pos: "Verb" }, { en: "Blow", id: "Meniup", pos: "Verb" }, { en: "Fall", id: "Jatuh / tumbang", pos: "Verb" }, { en: "Fly", id: "Terbang", pos: "Verb" }, { en: "Invite", id: "Mengundang", pos: "Verb" }, { en: "Clean", id: "Membersihkan", pos: "Verb" }, { en: "Agree", id: "Setuju", pos: "Verb" }, { en: "Work", id: "Bekerja", pos: "Verb" }, { en: "Bear", id: "Menghasilkan buah", pos: "Verb" }, { en: "Hold", id: "Mengadakan", pos: "Verb" }, { en: "Shout", id: "Berteriak", pos: "Verb" }, { en: "Say", id: "Berkata", pos: "Verb" }, { en: "Join", id: "Bergabung", pos: "Verb" }, { en: "Collect", id: "Mengumpulkan", pos: "Verb" }, { en: "Sell", id: "Menjual", pos: "Verb" }, { en: "Earn", id: "Menghasilkan (uang)", pos: "Verb" }, { en: "Use", id: "Menggunakan", pos: "Verb" }, { en: "Cut", id: "Memotong", pos: "Verb" }, { en: "Disappear", id: "Lenyap", pos: "Verb" }, { en: "Care", id: "Peduli / merawat", pos: "Verb" }, { en: "Protect", id: "Melindungi", pos: "Verb" }, { en: "Replant", id: "Menanam kembali", pos: "Verb" }, { en: "Forbid", id: "Melarang", pos: "Verb" }, { en: "Gather", id: "Mengumpulkan", pos: "Verb" }, { en: "Carry", id: "Membawa / memikul", pos: "Verb" }, { en: "Break", id: "Patah / hancur", pos: "Verb" }, { en: "Search", id: "Mencari", pos: "Verb" }, { en: "Retrace", id: "Menelusuri kembali", pos: "Verb" }, { en: "Forget", id: "Lupa", pos: "Verb" }, { en: "Stumble", id: "Tersandung", pos: "Verb" }, { en: "Answer", id: "Menjawab", pos: "Verb" }, { en: "Step", id: "Melangkah", pos: "Verb" }, { en: "Greet", id: "Menyapa", pos: "Verb" }, { en: "Startle", id: "Mengejutkan", pos: "Verb" }, { en: "Forgive", id: "Memaafkan", pos: "Verb" }, { en: "Need", id: "Membutuhkan", pos: "Verb" }, { en: "Borrow", id: "Meminjam", pos: "Verb" }, { en: "Turn", id: "Berubah", pos: "Verb" }, { en: "Deceive", id: "Menipu", pos: "Verb" }, { en: "Accuse", id: "Menuduh", pos: "Verb" }, { en: "Convince", id: "Meyakinkan", pos: "Verb" }, { en: "Tremble", id: "Gemetar", pos: "Verb" }, { en: "Receive", id: "Menerima", pos: "Verb" }, { en: "Jump", id: "Melompat", pos: "Verb" }, { en: "Slip", id: "Tergelincir", pos: "Verb" }, { en: "Survive", id: "Selamat", pos: "Verb" }, { en: "Return", id: "Mengembalikan", pos: "Verb" }, { en: "Grant", id: "Mengabulkan", pos: "Verb" }, { en: "Reward", id: "Memberi hadiah", pos: "Verb" }, { en: "Dig up", id: "Menggali", pos: "Verb" }, { en: "Tear apart", id: "Mengoyak / merusak", pos: "Verb" }, { en: "Destroy", id: "Menghancurkan", pos: "Verb" }, { en: "Neglect", id: "Mengabaikan", pos: "Verb" },
+            
+            // ADJECTIVES
+            { en: "Ancient", id: "Kuno", pos: "Adjective" }, { en: "Realistic", id: "Realistis", pos: "Adjective" }, { en: "Famous", id: "Terkenal", pos: "Adjective" }, { en: "Proud", id: "Bangga / sombong", pos: "Adjective" }, { en: "Arrogant", id: "Arogan / angkuh", pos: "Adjective" }, { en: "Great", id: "Hebat / besar", pos: "Adjective" }, { en: "Fine / Finest", id: "Paling bagus", pos: "Adjective" }, { en: "Best", id: "Terbaik", pos: "Adjective" }, { en: "Sure", id: "Yakin", pos: "Adjective" }, { en: "Old", id: "Tua", pos: "Adjective" }, { en: "Angry", id: "Marah", pos: "Adjective" }, { en: "Curious", id: "Penasaran", pos: "Adjective" }, { en: "Next", id: "Berikutnya", pos: "Adjective" }, { en: "Beautiful", id: "Indah / cantik", pos: "Adjective" }, { en: "White", id: "Putih", pos: "Adjective" }, { en: "Many", id: "Banyak", pos: "Adjective" }, { en: "Blue", id: "Biru", pos: "Adjective" }, { en: "Soft", id: "Lembut", pos: "Adjective" }, { en: "Moved", id: "Tersentuh (perasaan)", pos: "Adjective" }, { en: "Humble", id: "Rendah hati", pos: "Adjective" }, { en: "Wooden", id: "Terbuat dari kayu", pos: "Adjective" }, { en: "Confident", id: "Percaya diri", pos: "Adjective" }, { en: "Entire", id: "Seluruh", pos: "Adjective" }, { en: "Weak", id: "Lemah", pos: "Adjective" }, { en: "Strong", id: "Kuat", pos: "Adjective" }, { en: "Wilted", id: "Layu", pos: "Adjective" }, { en: "Lovely", id: "Menawan", pos: "Adjective" }, { en: "Other", id: "Lainnya", pos: "Adjective" }, { en: "Equal", id: "Setara", pos: "Adjective" }, { en: "Abundant", id: "Berlimpah", pos: "Adjective" }, { en: "Big", id: "Besar", pos: "Adjective" }, { en: "Own", id: "Milik sendiri", pos: "Adjective" }, { en: "Ashamed", id: "Malu", pos: "Adjective" }, { en: "Young", id: "Muda", pos: "Adjective" }, { en: "Alone", id: "Sendirian", pos: "Adjective" }, { en: "Daily", id: "Harian", pos: "Adjective" }, { en: "Living", id: "Hidup", pos: "Adjective" }, { en: "Barren", id: "Gersang / tandus", pos: "Adjective" }, { en: "Dead", id: "Mati", pos: "Adjective" }, { en: "Same", id: "Sama", pos: "Adjective" }, { en: "Lush", id: "Subur / rimbun", pos: "Adjective" }, { en: "Wild", id: "Liar", pos: "Adjective" }, { en: "Dry", id: "Kering", pos: "Adjective" }, { en: "Confused", id: "Bingung", pos: "Adjective" }, { en: "Mysterious", id: "Misterius", pos: "Adjective" }, { en: "Polite", id: "Sopan", pos: "Adjective" }, { en: "Brave", id: "Berani", pos: "Adjective" }, { en: "Broken", id: "Patah", pos: "Adjective" }, { en: "Fierce", id: "Galak", pos: "Adjective" }, { en: "Flustered", id: "Gugup / panik", pos: "Adjective" }, { en: "Desperate", id: "Putus asa", pos: "Adjective" }, { en: "Magical", id: "Ajaib", pos: "Adjective" }, { en: "Suspicious", id: "Curiga", pos: "Adjective" }, { en: "Large", id: "Besar", pos: "Adjective" }, { en: "Reckless", id: "Ceroboh", pos: "Adjective" },
+            
+            // ADVERBS
+            { en: "Very", id: "Sangat", pos: "Adverb" }, { en: "Also", id: "Juga", pos: "Adverb" }, { en: "Just", id: "Hanya", pos: "Adverb" }, { en: "Deeply", id: "Sangat dalam", pos: "Adverb" }, { en: "Finally", id: "Akhirnya", pos: "Adverb" }, { en: "Where", id: "Di mana", pos: "Adverb" }, { en: "Once", id: "Dahulu kala / sekali", pos: "Adverb" }, { en: "Carefully", id: "Dengan hati-hati", pos: "Adverb" }, { en: "Soon", id: "Segera", pos: "Adverb" }, { en: "Tightly", id: "Dengan erat", pos: "Adverb" }, { en: "Further", id: "Lebih jauh", pos: "Adverb" }, { en: "More", id: "Lebih", pos: "Adverb" }, { en: "Immediately", id: "Seketika itu juga", pos: "Adverb" }, { en: "Together", id: "Bersama-sama", pos: "Adverb" }, { en: "Angrily", id: "Dengan marah", pos: "Adverb" }, { en: "Calmly", id: "Dengan tenang", pos: "Adverb" }, { en: "Away", id: "Jauh", pos: "Adverb" }, { en: "Now", id: "Sekarang", pos: "Adverb" }, { en: "Then", id: "Kemudian", pos: "Adverb" }, { en: "Only", id: "Hanya", pos: "Adverb" }, { en: "Ago", id: "Yang lalu", pos: "Adverb" }, { en: "Near", id: "Di dekat", pos: "Adverb" }, { en: "Hard", id: "Keras / giat", pos: "Adverb" }, { en: "Gradually", id: "Secara bertahap", pos: "Adverb" }, { en: "Freely", id: "Dengan bebas", pos: "Adverb" }, { en: "Peacefully", id: "Dengan damai", pos: "Adverb" }, { en: "Suddenly", id: "Tiba-tiba", pos: "Adverb" }, { en: "Inside", id: "Di dalam", pos: "Adverb" }, { en: "Yesterday", id: "Kemarin", pos: "Adverb" }, { en: "Never", id: "Tidak pernah", pos: "Adverb" }, { en: "Unfortunately", id: "Sayangnya", pos: "Adverb" }, { en: "Miraculously", id: "Secara ajaib", pos: "Adverb" }, { en: "Secretly", id: "Secara sembunyi-sembunyi", pos: "Adverb" },
+            
+            // PRONOUNS
+            { en: "Who", id: "Siapa / yang", pos: "Pronoun" }, { en: "He / Him", id: "Dia (Laki-laki)", pos: "Pronoun" }, { en: "His", id: "Miliknya (Laki-laki)", pos: "Pronoun" }, { en: "They / Them", id: "Mereka", pos: "Pronoun" }, { en: "Their", id: "Milik mereka", pos: "Pronoun" }, { en: "This", id: "Ini", pos: "Pronoun" }, { en: "That", id: "Itu", pos: "Pronoun" }, { en: "It / Itself", id: "Ia / dirinya sendiri", pos: "Pronoun" }, { en: "Its", id: "Miliknya (benda/hewan)", pos: "Pronoun" }, { en: "Why", id: "Mengapa", pos: "Pronoun" }, { en: "You / Your", id: "Kamu / milikmu", pos: "Pronoun" }, { en: "We / Us", id: "Kami / kita", pos: "Pronoun" }, { en: "I / Me", id: "Saya", pos: "Pronoun" }, { en: "My", id: "Milik saya", pos: "Pronoun" }, { en: "No one", id: "Tidak seorang pun", pos: "Pronoun" }, { en: "Anyone", id: "Siapa pun", pos: "Pronoun" },
+            
+            // PREPOSITIONS
+            { en: "In", id: "Di / di dalam", pos: "Preposition" }, { en: "From", id: "Dari", pos: "Preposition" }, { en: "To", id: "Ke / kepada", pos: "Preposition" }, { en: "Along", id: "Sepanjang", pos: "Preposition" }, { en: "Of", id: "Dari / bagian dari", pos: "Preposition" }, { en: "With", id: "Dengan", pos: "Preposition" }, { en: "At", id: "Pada / di", pos: "Preposition" }, { en: "By", id: "Oleh / dengan", pos: "Preposition" }, { en: "Onto", id: "Ke atas", pos: "Preposition" }, { en: "Around", id: "Di sekeliling", pos: "Preposition" }, { en: "As", id: "Sebagai", pos: "Preposition" }, { en: "Without", id: "Tanpa", pos: "Preposition" }, { en: "Except", id: "Kecuali", pos: "Preposition" }, { en: "For", id: "Untuk", pos: "Preposition" }, { en: "Over", id: "Di atas", pos: "Preposition" }, { en: "Upon", id: "Pada", pos: "Preposition" }, { en: "Toward", id: "Ke arah", pos: "Preposition" }, { en: "Beside", id: "Di samping", pos: "Preposition" }, { en: "Into", id: "Ke dalam", pos: "Preposition" },
+            
+            // CONJUNCTIONS
+            { en: "But", id: "Tetapi", pos: "Conjunction" }, { en: "And", id: "Dan", pos: "Conjunction" }, { en: "So", id: "Jadi / sehingga", pos: "Conjunction" }, { en: "However", id: "Namun", pos: "Conjunction" }, { en: "When", id: "Ketika", pos: "Conjunction" }, { en: "While", id: "Sementara", pos: "Conjunction" }, { en: "Since", id: "Karena / sejak", pos: "Conjunction" }, { en: "Until", id: "Sampai", pos: "Conjunction" }, { en: "So that", id: "Agar / supaya", pos: "Conjunction" }, { en: "Or", id: "Atau", pos: "Conjunction" }, { en: "After", id: "Setelah", pos: "Conjunction" }, { en: "Because", id: "Karena", pos: "Conjunction" }, { en: "If", id: "Jika", pos: "Conjunction" }, { en: "That", id: "Bahwa", pos: "Conjunction" }, { en: "Whenever", id: "Kapan pun", pos: "Conjunction" },
+            
+            // ARTICLES / DETERMINERS
+            { en: "A / An", id: "Sebuah / seorang / seekor", pos: "Article / Determiner" }, { en: "The", id: "Itu (spesifik)", pos: "Article / Determiner" }, { en: "All", id: "Semua", pos: "Article / Determiner" }
+        ];
+
+        const allPosOptions = [
+            "Noun", "Verb", "Adjective", "Adverb", 
+            "Pronoun", "Preposition", "Conjunction", "Article / Determiner"
+        ];
+        
+        let quizPool = [];
+        let currentIndex = 0;
+        let score = 0;
+        const questionsPerRound = 15; // Jumlah soal tiap ronde
+
+        // Algoritma Fisher-Yates untuk mengacak array dengan sempurna
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.**Latihan Hafalan Kosakata (Set Acak)**
+
+| Bahasa Inggris | Kelas Kata | Arti (Indonesia) | Contoh Singkat |
+| :--- | :--- | :--- | :--- |
+| **Inevitable** | *Adjective* | Tidak bisa dihindari | *Change is inevitable.* |
+| **Convey** | *Verb* | Menyampaikan | *Please convey my apologies.* |
+| **Meticulous** | *Adjective* | Sangat teliti | *She is a meticulous planner.* |
+| **Ponder** | *Verb* | Merenungkan | *I need time to ponder your offer.* |
+| **Resilient** | *Adjective* | Tangguh / Cepat pulih | *Children are often very resilient.* |
+| **Obscure** | *Adjective* | Kurang dikenal / Kabur | *An obscure poet from the 18th century.* |
+| **Adequate** | *Adjective* | Memadai / Cukup | *Make sure you have adequate water.* |
+| **Flaw** | *Noun* | Cacat / Kekurangan | *The plan has a fatal flaw.* |
+| **Reluctant** | *Adjective* | Enggan / Berat hati | *He was reluctant to leave.* |
+| **Versatile** | *Adjective* | Serbaguna | *A versatile tool for the kitchen.* |
+| **Profound** | *Adjective* | Mendalam | *A profound sense of sadness.* |
+| **Vivid** | *Adjective* | Sangat jelas (ingatan/warna) | *I have a vivid memory of that day.* |
+
+Ketik **"refresh"** di pesan selanjutnya untuk mendapatkan set kosakata yang 100% baru dan diacak lagi. 
+
+*(Catatan: Jika kamu sebenarnya punya daftar kata **sendiri** yang ingin diacak tanpa merubah artinya, silakan kirim/paste daftarnya ke sini!)*
